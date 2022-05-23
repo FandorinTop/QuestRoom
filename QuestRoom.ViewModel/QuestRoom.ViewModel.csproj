@@ -11,8 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Client\Responce\" />
+    <Folder Include="Discount\Responce\" />
     <Folder Include="PersonalType\Responce\" />
     <Folder Include="Personal\Responce\" />
+    <Folder Include="QuestActorSet\Responce\" />
+    <Folder Include="QuestActor\Responce\" />
     <Folder Include="QuestRoom\Responce\" />
     <Folder Include="QuestType\Responce\" />
     <Folder Include="Type\Responce\" />

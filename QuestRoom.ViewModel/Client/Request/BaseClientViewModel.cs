@@ -1,8 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace QuestRoom.DomainModel
+namespace QuestRoom.ViewModel.Client.Request
 {
-    public class Client : BaseEntity
+    public class BaseClientViewModel
     {
         [Required]
         [MaxLength(128)]
@@ -18,4 +23,5 @@ namespace QuestRoom.DomainModel
         [Phone]
         public string PhoneNumbe { get; set; }
     }
+}
 }
