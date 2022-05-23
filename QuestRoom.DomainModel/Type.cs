@@ -2,7 +2,7 @@
 
 namespace QuestRoom.DomainModel
 {
-    public class Type : BaseEntity
+    public class QuestTypeName : BaseEntity
     {
         private string name;
 

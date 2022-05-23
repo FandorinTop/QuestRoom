@@ -4,7 +4,7 @@
     {
         public int TypeId { get; set; }
 
-        public virtual Type Type { get; set; }
+        public virtual QuestTypeName Type { get; set; }
 
         public int QuestRoomId { get; set; }
 
