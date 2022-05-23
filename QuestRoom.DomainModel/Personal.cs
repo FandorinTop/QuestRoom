@@ -16,5 +16,17 @@ namespace QuestRoom.DomainModel
         public int PersonalTypeId { get; set; }
 
         public virtual PersonalType PersonalType { get; set; } = default!;
+
+        [Required]
+        [EmailAddress]
+        [MaxLength(64)]
+        public string Email { get; set; } = default!;
+
+        [Required]
+        [Phone]
+        [MaxLength(64)]
+        public string PhoneNumber { get; set; } = default!;
+
+        public virtual List<QuestActor> Actors { get; set; } = new List<QuestActor>();
     }
 }

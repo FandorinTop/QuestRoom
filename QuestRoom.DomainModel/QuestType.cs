@@ -8,6 +8,6 @@
 
         public int QuestRoomId { get; set; }
 
-        public virtual QuestRoom QuestRoom { get; set; }
+        public virtual Quest QuestRoom { get; set; }
     }
 }

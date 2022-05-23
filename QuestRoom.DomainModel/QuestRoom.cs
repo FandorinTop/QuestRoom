@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuestRoom.DomainModel
 {
-    public class QuestRoom : BaseEntity
+    public class Quest : BaseEntity
     {
         [Range(0, int.MaxValue)]
         public int MaxPlayerCount { get; set; }
@@ -24,6 +25,7 @@ namespace QuestRoom.DomainModel
         [MaxLength(360)]
         public int Duration { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         /// <summary>
