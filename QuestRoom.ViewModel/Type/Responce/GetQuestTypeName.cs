@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuestRoom.ViewModel.Type.Responce
 {
-    internal class GetQuestTypeName : GetBaseEntityViewModel
+    public class GetQuestTypeNameViewModel : GetBaseEntityViewModel
     {
         public string Name { get; set; }
     }

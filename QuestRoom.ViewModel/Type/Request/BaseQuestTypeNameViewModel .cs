@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace QuestRoom.ViewModel.Type.Request
 {
-    public class BaseTypeViewModel
+    public class BaseQuestTypeNameViewModel
     {
         [Required]
         [MaxLength(64)]

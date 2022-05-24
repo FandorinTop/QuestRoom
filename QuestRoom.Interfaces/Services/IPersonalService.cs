@@ -1,6 +1,8 @@
 ﻿using QuestRoom.ViewModel.Common;
 using QuestRoom.ViewModel.Personal.Request;
 using QuestRoom.ViewModel.Personal.Responce;
+using QuestRoom.ViewModel.Quest.Request;
+using QuestRoom.ViewModel.Quest.Responce;
 
 namespace QuestRoom.Interfaces.Services
 {
