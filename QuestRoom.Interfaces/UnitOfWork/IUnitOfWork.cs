@@ -1,6 +1,6 @@
-﻿using QuestRoom.DataAccess.Repositories.Interfaces;
+﻿using QuestRoom.Interfaces.Repositories;
 
-namespace QuestRoom.DataAccess.UnitOfWork.Interfaces
+namespace QuestRoom.Interfaces.UnitOfWork
 {
     public interface IUnitOfWork
     {

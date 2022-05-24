@@ -1,6 +1,6 @@
 ﻿using QuestRoom.DataAccess.Repositories;
-using QuestRoom.DataAccess.Repositories.Interfaces;
-using QuestRoom.DataAccess.UnitOfWork.Interfaces;
+using QuestRoom.Interfaces.Repositories;
+using QuestRoom.Interfaces.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;

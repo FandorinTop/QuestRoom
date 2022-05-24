@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuestRoom.DataAccess.Repositories.Interfaces.Base;
+using QuestRoom.Interfaces.Repositories.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace QuestRoom.DataAccess.Repositories.Interfaces.Base
+﻿namespace QuestRoom.Interfaces.Repositories.Base
 {
     public interface IBaseRepository<T> : IDisposable
     {

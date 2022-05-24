@@ -24,4 +24,3 @@ namespace QuestRoom.ViewModel.Client.Request
         public string PhoneNumbe { get; set; }
     }
 }
-}
