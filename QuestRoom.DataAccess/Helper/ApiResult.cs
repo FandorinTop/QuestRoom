@@ -130,8 +130,8 @@ namespace QuestRoom.DataAccess.Helper
             }
 
             source = source
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                .Take((pageIndex * pageSize)..pageSize);
+
 
             var data = await source.ToListAsync();
 
@@ -228,8 +228,7 @@ namespace QuestRoom.DataAccess.Helper
             }
 
             source = source
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize);
+                .Take((pageIndex * pageSize)..pageSize);
 
             var data = await source
                 .Select(selector)
