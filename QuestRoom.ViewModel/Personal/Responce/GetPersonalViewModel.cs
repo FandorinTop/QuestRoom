@@ -25,6 +25,6 @@ namespace QuestRoom.ViewModel.Personal.Responce
 
         public string PhoneNumber { get; set; } = default!;
 
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

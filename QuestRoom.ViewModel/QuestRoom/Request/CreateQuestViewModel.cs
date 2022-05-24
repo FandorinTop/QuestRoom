@@ -8,6 +8,5 @@ namespace QuestRoom.ViewModel.Quest.Request
 {
     public class CreateQuestViewModel : BaseQuestViewModel
     {
-
     }
 }

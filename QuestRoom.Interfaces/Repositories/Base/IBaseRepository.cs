@@ -11,8 +11,8 @@ namespace QuestRoom.Interfaces.Repositories.Base
             IEnumerable<SortingRequest> sortingRequests = null,
             IEnumerable<FilterRequest> filterRequests = null);
 
-
-        Task<T> GetByIDAsync(int id);
+        Task<bool> IsExistAny(int id);
+        Task<T> GetByIdAsync(int id);
         Task InsertAsync(T item);
         Task DeleteAsync(int id);
         void Update(T item);

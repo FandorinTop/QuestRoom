@@ -4,7 +4,6 @@ namespace QuestRoom.ViewModel.Type.Request
 {
     public class UpdateQuestTypeNameViewModel : BaseQuestTypeNameViewModel
     {
-        [Required]
-        public int? Id { get; set; } = default!;
+        public int Id { get; set; } = default!;
     }
 }

@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\QuestRoom.DataAccess\QuestRoom.DataAccess.csproj" />
+    <ProjectReference Include="..\QuestRoom.Interfaces\QuestRoom.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

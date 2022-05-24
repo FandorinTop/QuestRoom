@@ -12,6 +12,9 @@ namespace QuestRoom.Interfaces.UnitOfWork
         public IQuestRepository QuestRepository { get; }
         public IQuestSessionRepository QuestSessionRepository { get; }
         public IQuestTypeRepository QuestTypeRepository { get; }
-        public IQuestTypeNameRepository TypeRepository { get; }
+        public IQuestTypeNameRepository QuestTypeNameRepository { get; }
+        public IClientRepository ClientRepository { get; }
+
+        public Task SaveAsync();
     }
 }

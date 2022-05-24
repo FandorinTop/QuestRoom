@@ -3,8 +3,8 @@ using QuestRoom.Interfaces.Repositories.Base;
 
 namespace QuestRoom.Interfaces.Repositories
 {
-    public interface IQuestTypeNameRepository : IBaseRepository<QuestTypeName>
+    public interface IClientRepository : IBaseRepository<Client>
     {
-        public Task<QuestTypeName> FindByName(string name);
+
     }
 }

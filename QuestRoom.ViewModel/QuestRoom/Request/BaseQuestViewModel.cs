@@ -29,7 +29,5 @@ namespace QuestRoom.ViewModel.Quest.Request
         public int? AgeRestriction { get; set; }
 
         public decimal Price { get; set; }
-
-        public virtual List<QuestTypeItem> Types { get; set; } = new List<QuestTypeItem>();
     }
 }

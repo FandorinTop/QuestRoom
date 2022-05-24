@@ -1,4 +1,5 @@
-﻿using QuestRoom.Common;
+﻿
+using QuestRoom.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,7 +20,7 @@ namespace QuestRoom.ViewModel.Personal.Request
         public Gender Gender { get; set; }
 
         [Required]
-        public int? PersonalTypeId { get; set; } = default!;
+        public int PersonalTypeId { get; set; } = default!;
 
         [Required]
         [EmailAddress]

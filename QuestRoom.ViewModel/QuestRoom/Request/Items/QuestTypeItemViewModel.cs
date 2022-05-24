@@ -1,6 +1,6 @@
 ﻿namespace QuestRoom.ViewModel.Quest.Request.Items
 {
-    public class QuestTypeItem
+    public class QuestTypeNameItem
     {
         public int Id { get; set; }
     }

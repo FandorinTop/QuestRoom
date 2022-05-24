@@ -8,7 +8,7 @@ namespace QuestRoom.ViewModel.PersonalType.Responce
 {
     public class GetPersonalTypeViewModel
     {
-        int Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

@@ -10,9 +10,9 @@ namespace QuestRoom.ViewModel.QuestType.Request
     public class BaseQuestTypeViewModel
     {
         [Required]
-        public int? QuestTypeId { get; set; }
+        public int QuestTypeId { get; set; }
 
         [Required]
-        public int? QuestRoomId { get; set; }
+        public int QuestRoomId { get; set; }
     }
 }

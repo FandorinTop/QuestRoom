@@ -21,11 +21,25 @@ namespace QuestRoom.DataAccess.UnitOfWork
         private IQuestSessionRepository questSessionRepository;
         private IQuestTypeRepository questTypeRepository;
         private IQuestTypeNameRepository typeRepository;
+        private IClientRepository clientRepository;
 
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public IClientRepository ClientRepository
+        {
+            get
+            {
+                if (clientRepository is null)
+                {
+                    clientRepository  = new ClientRepository(_context);
+                }
+
+                return clientRepository ;
+            }
         }
 
         public IDiscountRepository DiscountRepository
@@ -132,7 +146,7 @@ namespace QuestRoom.DataAccess.UnitOfWork
             }
         }
 
-        public IQuestTypeNameRepository TypeRepository
+        public IQuestTypeNameRepository QuestTypeNameRepository
         {
             get
             {
@@ -143,6 +157,11 @@ namespace QuestRoom.DataAccess.UnitOfWork
 
                 return typeRepository;
             }
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

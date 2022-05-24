@@ -2,6 +2,6 @@
 {
     public class UpdateDiscountViewModel : BaseDiscountViewModel
     {
-
+        public int Id { get; set; }
     }
 }

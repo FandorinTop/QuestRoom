@@ -5,5 +5,6 @@ namespace QuestRoom.Interfaces.Repositories
 {
     public interface IPersonalTypeRepository : IBaseRepository<PersonalType>
     {
+        public Task<PersonalType> FindByName(string name);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuestRoom.DataAccess.Helper;
+using QuestRoom.DomainModel;
 using QuestRoom.Interfaces.Repositories.Base;
 using QuestRoom.ViewModel.Common;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QuestRoom.DataAccess.Repositories.Base
 {
-    public class GenericRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         internal ApplicationDbContext context;
         internal DbSet<TEntity> dbSet;
@@ -22,7 +23,7 @@ namespace QuestRoom.DataAccess.Repositories.Base
             dbSet = context.Set<TEntity>();
         }
 
-        public virtual async Task<TEntity> GetByIDAsync(int id)
+        public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);
         }
@@ -84,6 +85,11 @@ namespace QuestRoom.DataAccess.Repositories.Base
             var responce = await ApiResult<D>.CreateAsync(selector, dataQuery, pageIndex, pageSize, sortingRequests, filterRequests);
 
             return responce;
+        }
+
+        public Task<bool> IsExistAny(int id)
+        {
+            return dbSet.AnyAsync(item => item.Id == id);
         }
     }
 }
