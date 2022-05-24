@@ -4,9 +4,9 @@ using QuestRoom.Interfaces.Repositories;
 
 namespace QuestRoom.DataAccess.Repositories
 {
-    public class TypeRepository : GenericRepository<QuestTypeName>, IQuestTypeNameRepository
+    public class QuestTypeNameRepository : GenericRepository<QuestTypeName>, IQuestTypeNameRepository
     {
-        public TypeRepository(ApplicationDbContext context) : base(context)
+        public QuestTypeNameRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

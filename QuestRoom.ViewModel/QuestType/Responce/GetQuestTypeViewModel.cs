@@ -1,18 +1,16 @@
-﻿using System;
+﻿using QuestRoom.ViewModel.Base;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuestRoom.ViewModel.QuestType.Request
+namespace QuestRoom.ViewModel.QuestType.Responce
 {
-    public class BaseQuestTypeViewModel
+    internal class GetQuestTypeViewModel : GetBaseEntityViewModel
     {
-        [Required]
         public int? QuestTypeId { get; set; }
 
-        [Required]
         public int? QuestRoomId { get; set; }
     }
 }

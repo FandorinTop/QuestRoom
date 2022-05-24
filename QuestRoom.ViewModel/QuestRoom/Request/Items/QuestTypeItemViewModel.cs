@@ -1,4 +1,4 @@
-﻿namespace QuestRoom.ViewModel.QuestRoom.Request.Items
+﻿namespace QuestRoom.ViewModel.Quest.Request.Items
 {
     public class QuestTypeItem
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuestRoom.ViewModel.QuestSession
+namespace QuestRoom.ViewModel.QuestSession.Request
 {
     public class BaseQuestSessionViewModel
     {
@@ -17,6 +17,6 @@ namespace QuestRoom.ViewModel.QuestSession
         public int? ClientId { get; set; }
 
         [Required]
-        public int? QuestId { get; set; }
+        public int? QuestActorSetId { get; set; }
     }
 }

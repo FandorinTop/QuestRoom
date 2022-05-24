@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace QuestRoom.ViewModel.QuestRoom.Request
+namespace QuestRoom.ViewModel.Quest.Request
 {
     public class UpdateQuestViewModel : BaseQuestViewModel
     {

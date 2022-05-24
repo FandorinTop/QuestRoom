@@ -1,4 +1,6 @@
-﻿using QuestRoom.ViewModel.Discount.Request;
+﻿using QuestRoom.ViewModel.Common;
+using QuestRoom.ViewModel.Discount.Request;
+using QuestRoom.ViewModel.Discount.Responce;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,10 @@ namespace QuestRoom.Interfaces.Services
     {
         public Task<int> Create(CreateDiscountViewModel viewModel);
 
-        public Task Update(CreateDiscountViewModel viewModel);
+        public Task Update(UpdateDiscountViewModel viewModel);
 
-        //public Task<GetDiscountViewModel> Get(CreateDiscountViewModel viewModel);
+        public Task<GetDiscountViewModel> Get(int id);
 
-        //public Task<ApiResult<GetDiscountViewModel>> GetAll(CreateDiscountViewModel viewModel);
+        public Task<ApiResultViewModel<GetDiscountViewModel>> GetAll(int pageIndex, int pageSize, IEnumerable<FilterRequest> filters, IEnumerable<SortingRequest> sorting);
     }
 }

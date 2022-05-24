@@ -7,19 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuestRoom.DomainModel\QuestRoom.DomainModel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Client\Responce\" />
-    <Folder Include="Discount\Responce\" />
-    <Folder Include="PersonalType\Responce\" />
-    <Folder Include="Personal\Responce\" />
-    <Folder Include="QuestActorSet\Responce\" />
-    <Folder Include="QuestActor\Responce\" />
-    <Folder Include="QuestRoom\Responce\" />
-    <Folder Include="QuestType\Responce\" />
-    <Folder Include="Type\Responce\" />
+    <ProjectReference Include="..\QuestRoom.Common\QuestRoom.Common.csproj" />
   </ItemGroup>
 
 </Project>

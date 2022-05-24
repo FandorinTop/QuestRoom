@@ -1,7 +1,7 @@
-﻿using QuestRoom.ViewModel.QuestRoom.Request.Items;
+﻿using QuestRoom.ViewModel.Quest.Request.Items;
 using System.ComponentModel.DataAnnotations;
 
-namespace QuestRoom.ViewModel.QuestRoom.Request
+namespace QuestRoom.ViewModel.Quest.Request
 {
     public class BaseQuestViewModel
     {

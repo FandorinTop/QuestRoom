@@ -138,7 +138,7 @@ namespace QuestRoom.DataAccess.UnitOfWork
             {
                 if (typeRepository is null)
                 {
-                    typeRepository = new TypeRepository(_context);
+                    typeRepository = new QuestTypeNameRepository(_context);
                 }
 
                 return typeRepository;
