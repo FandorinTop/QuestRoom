@@ -1,0 +1,165 @@
+﻿@page "/discount"
+@using QuestRoom.ViewModel.Common
+@using QuestRoom.ViewModel.Discount.Responce
+@inject NavigationManager NavManager
+
+<div class="mat-layout-grid-inner">
+    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
+        <h3>Discount Table</h3>
+    </div>
+    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+    </div>
+    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
+        <MatButton OnClick="@(item => NavManager.NavigateTo($"/discount/"))" Icon="create_new_folder" style="display: flex; justify-content: flex-end">Add</MatButton>
+    </div>
+</div>
+<div>
+    <p>
+        <MatStringField @oninput ="@(async (ChangeEventArgs e) => await SerchingFieldChange(e.Value.ToString()))"></MatStringField>
+    </p>
+</div>
+<MatTable Items="ApiResult.Data"
+          class="mat-elevation-z5"
+          UseSortHeaderRow="true"
+          ShowPaging="false"
+          @bind-PageSize="@Pagenator.PageSize">
+    <MatTableHeader>
+        <MatSortHeaderRow SortChanged="@SortData">
+            <MatSortHeader SortId="no">Action</MatSortHeader>
+            <MatSortHeader SortId="Id">Id</MatSortHeader>
+            <MatSortHeader SortId="Name">Name</MatSortHeader>
+            <MatSortHeader SortId="Reduction">Reduction</MatSortHeader>
+            <MatSortHeader SortId="CreatedAt">CreatedAt</MatSortHeader>
+        </MatSortHeaderRow>
+    </MatTableHeader>
+    <MatTableRow>
+        <td>
+            <MatButton Raised="true" Icon="edit" title="Edit" OnClick="@(item => NavManager.NavigateTo($"/manage/Course/{@context.Id}"))"></MatButton>
+        </td>
+        <td>@context.Id</td>
+        <td>@context.Name</td>
+        <td>@context.Reduction</td>
+        <td>@context.CreatedAt</td>
+    </MatTableRow>
+</MatTable>
+<MatPaginator Page="OnPage" @ref="matTablePagenator" @bind-Length="ApiResult.TotalCount">
+
+</MatPaginator>
+
+@code {
+    MatPaginator matTablePagenator { get; set; } = null;
+    private const string FilterColumn = nameof(GetDiscountViewModel.Name);
+
+    [Inject]
+    HttpClient HttpClient { get; set; }
+
+    [Inject]
+    IJSRuntime JS { get; set; }
+
+
+    public GetApiBodyRequest Pagenator { get; set; } = new GetApiBodyRequest()
+        {
+            PageIndex = 0,
+            PageSize = 5,
+        };
+
+    public ApiResultViewModel<GetDiscountViewModel> ApiResult { get; set; } = new ApiResultViewModel<GetDiscountViewModel>()
+        {
+            Data = new List<GetDiscountViewModel>()
+        {
+            new GetDiscountViewModel(){Id = 1, Name = "1", CreatedAt = DateTime.Now, Reduction = 0.1},
+            new GetDiscountViewModel(){Id = 2, Name = "2", CreatedAt = DateTime.Now, Reduction = 0.2},
+            new GetDiscountViewModel(){Id = 3, Name = "3", CreatedAt = DateTime.Now, Reduction = 0.3},
+            new GetDiscountViewModel(){Id = 4, Name = "4", CreatedAt = DateTime.Now, Reduction = 0.4},
+            new GetDiscountViewModel(){Id = 5, Name = "5", CreatedAt = DateTime.Now, Reduction = 0.5},
+            new GetDiscountViewModel(){Id = 6, Name = "6", CreatedAt = DateTime.Now, Reduction = 0.6},
+            new GetDiscountViewModel(){Id = 7, Name = "7", CreatedAt = DateTime.Now, Reduction = 0.7},
+            new GetDiscountViewModel(){Id = 9, Name = "9", CreatedAt = DateTime.Now, Reduction = 0.9},
+            new GetDiscountViewModel(){Id = 10, Name = "10", CreatedAt = DateTime.Now, Reduction = 0.10},
+            new GetDiscountViewModel(){Id = 11, Name = "11", CreatedAt = DateTime.Now, Reduction = 0.11},
+            new GetDiscountViewModel(){Id = 12, Name = "12", CreatedAt = DateTime.Now, Reduction = 0.12},
+        },
+            TotalCount = 12
+        };
+
+    public async Task GetData()
+    {
+        var result = await HttpClient.PostAsJsonAsync("api/Discount/GetApiResponce", Pagenator);
+
+        if (result.IsSuccessStatusCode)
+        {
+            ApiResult = await result.Content.ReadFromJsonAsync<ApiResultViewModel<GetDiscountViewModel>>();
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("alert", $"Error {await result.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    public async Task SortData(MatSortChangedEvent sort)
+    {
+        if (!(sort == null || sort.Direction == MatSortDirection.None || string.IsNullOrEmpty(sort.SortId)))
+        {
+            if (sort.Direction == MatSortDirection.Desc)
+            {
+                Pagenator.SortingRequests = new List<SortingRequest>()
+                    {
+                        new SortingRequest()
+                        {
+                            SortColumn = sort.SortId,
+                            SortOrder = "DESC"
+                        }
+                    };
+            }
+            else
+            {
+                Pagenator.SortingRequests = new List<SortingRequest>()
+                    {
+                        new SortingRequest()
+                        {
+                            SortColumn = sort.SortId,
+                            SortOrder = "ASC"
+                        }
+                    };
+            }
+
+            await GetData();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetData();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        matTablePagenator.PageIndex = Pagenator.PageIndex;
+        matTablePagenator.PageSize = Pagenator.PageSize;
+        matTablePagenator.Length = 100;
+
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task OnPage(MatPaginatorPageEvent e)
+    {
+        Pagenator.PageIndex = e.PageIndex;
+        Pagenator.PageSize = e.PageSize;
+        await GetData();
+    }
+
+    private async Task SerchingFieldChange(string value)
+    {
+        Pagenator.FilterRequests = new List<FilterRequest>()
+        {
+            new FilterRequest()
+            {
+                FilterColumn = FilterColumn,
+                FilterQuery = value,
+                IsPartFilter = true
+            }
+        };
+
+        await GetData();
+    }
+}
