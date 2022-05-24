@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuestRoom.DataAccess.Repositories.Interfaces.Base;
+using QuestRoom.DataAccess.Helper;
 using QuestRoom.Interfaces.Repositories.Base;
+using QuestRoom.ViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,27 +20,6 @@ namespace QuestRoom.DataAccess.Repositories.Base
         {
             this.context = context;
             dbSet = context.Set<TEntity>();
-        }
-
-        public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
-        {
-            IQueryable<TEntity> query = dbSet;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
         }
 
         public virtual async Task<TEntity> GetByIDAsync(int id)
@@ -95,6 +75,15 @@ namespace QuestRoom.DataAccess.Repositories.Base
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task<ApiResultViewModel<D>> GetApiResponce<D>(Expression<Func<TEntity, D>> selector, int pageIndex, int pageSize, IEnumerable<SortingRequest> sortingRequests = null, IEnumerable<FilterRequest> filterRequests = null)
+        {
+            var dataQuery = dbSet.AsQueryable();
+
+            var responce = await ApiResult<D>.CreateAsync(selector, dataQuery, pageIndex, pageSize, sortingRequests, filterRequests);
+
+            return responce;
         }
     }
 }

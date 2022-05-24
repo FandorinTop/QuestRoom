@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuestRoom.DomainModel\QuestRoom.DomainModel.csproj" />
+    <ProjectReference Include="..\QuestRoom.ViewModel\QuestRoom.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
