@@ -1,0 +1,119 @@
+﻿@page "/QuestTypeName/{Id:int?}"
+
+@using System.ComponentModel.DataAnnotations
+@using System.IO
+@using System.Net.Http.Headers
+@using QuestRoom.ViewModel.Type.Request
+
+<EditForm Model="Model" OnSubmit="Success">
+    <DataAnnotationsValidator />
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            @Title
+        </div>
+        <MatDivider />
+        <br />
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.Name)" @bind-Value="Model.Name" />
+                        <ValidationMessage For="@(() => Model.Name)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatButton Type="submit" Raised="true">Send</MatButton>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private string Title { get; set; } = string.Empty;
+
+        [Inject]
+        HttpClient HttpClient { get; set; }
+
+        [Inject]
+        IJSRuntime JS { get; set; }
+
+        [Parameter]
+        public int? Id { get; set; } = default;
+
+        private UpdateQuestTypeNameViewModel Model { get; set; } = new UpdateQuestTypeNameViewModel();
+
+        public async Task Success()
+        {
+            Console.WriteLine("Success");
+
+            if (Id == null)
+            {
+                await CreateAsync();
+            }
+            else
+            {
+                await UpdateAsync();
+            }
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await GetAsync();
+            Title = Id == null ? "Create QuestTypeName" : $"Edit QuestTypeName with id: '{Id}'";
+        }
+
+        private async Task GetAsync()
+        {
+            if (Id != default)
+            {
+                var responce = await HttpClient.GetAsync($"api/QuestTypeName/Get?id={Id}");
+                var result = await responce.Content.ReadFromJsonAsync<UpdateQuestTypeNameViewModel>();
+
+                Console.WriteLine("getResult: " + result);
+
+                Model = result ?? Model;
+            }
+        }
+
+        private async Task CreateAsync()
+        {
+            var result = await HttpClient.PostAsJsonAsync(@"api/Group/Create", Model);
+
+            if (result.IsSuccessStatusCode)
+            {
+                var id = await result.Content.ReadAsStringAsync();
+                Id = Convert.ToInt32(id);
+                await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
+            }
+            else
+            {
+                await JS.InvokeAsync<object>("alert", $"CreationError {await result.Content.ReadAsStringAsync()}");
+            }
+        }
+
+        private async Task UpdateAsync()
+        {
+            var updateModel = new UpdateQuestTypeNameViewModel()
+            {
+                Id = Id.Value,
+                Name = Model.Name
+            };
+
+            var result = await HttpClient.PutAsJsonAsync(@"api/Group/Update", updateModel);
+
+            if (result.IsSuccessStatusCode)
+            {
+                await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+            }
+            else
+            {
+                await JS.InvokeAsync<object>("alert", $"UpdateError {await result.Content.ReadAsStringAsync()}");
+            }
+        }
+}

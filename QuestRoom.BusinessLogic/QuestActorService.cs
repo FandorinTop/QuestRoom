@@ -8,7 +8,6 @@ using QuestRoom.ViewModel.QuestActor.Responce;
 
 namespace QuestRoom.BusinessLogic
 {
-
     public class QuestActorService : IQuestActorService
     {
         private IUnitOfWork _unitOfWork;
@@ -28,7 +27,7 @@ namespace QuestRoom.BusinessLogic
             return questActorId;
         }
 
-        public async Task<GetQuestActorViewModel> Get(int id)
+        public async Task<UpdateQuestActorViewModel> Get(int id)
         {
             var questActor = await repository.GetByIdAsync(id);
 
@@ -58,13 +57,16 @@ namespace QuestRoom.BusinessLogic
             }, pageIndex, pageSize, sorting, filters);
         }
 
-        private GetQuestActorViewModel Extract(QuestActor item) => new GetQuestActorViewModel()
+        private UpdateQuestActorViewModel Extract(QuestActor item) => new UpdateQuestActorViewModel()
         {
             Id = item.Id,
             PersonalId = item.PersonalId,
             QuestActorSetId = item.QuestActorSetId,
-            PersonalName = item.Personal.Name,
-            CreatedAt = item.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

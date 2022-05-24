@@ -37,7 +37,7 @@ namespace QuestRoom.BusinessLogic
             return personalType.Id;
         }
 
-        public async Task<GetPersonalTypeViewModel> Get(int id)
+        public async Task<UpdatePersonalTypeViewModel> Get(int id)
         {
             var PersonalType = await repository.GetByIdAsync(id);
 
@@ -89,11 +89,15 @@ namespace QuestRoom.BusinessLogic
             PersonalType.Name = viewModel.Name;
         }
 
-        private GetPersonalTypeViewModel Extract(PersonalType PersonalType) => new GetPersonalTypeViewModel()
+        private UpdatePersonalTypeViewModel Extract(PersonalType PersonalType) => new UpdatePersonalTypeViewModel()
         {
             Id = PersonalType.Id,
             Name = PersonalType.Name,
-            CreatedAt = PersonalType.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

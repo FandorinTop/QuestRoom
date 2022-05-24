@@ -38,7 +38,7 @@ namespace QuestRoom.BusinessLogic
             return discount.Id;
         }
 
-        public async Task<GetDiscountViewModel> Get(int id)
+        public async Task<UpdateDiscountViewModel> Get(int id)
         {
             var discount = await repository.GetByIdAsync(id);
 
@@ -92,12 +92,16 @@ namespace QuestRoom.BusinessLogic
             discount.Name = viewModel.Name;
         }
 
-        private GetDiscountViewModel Extract(Discount discount) => new GetDiscountViewModel()
+        private UpdateDiscountViewModel Extract(Discount discount) => new UpdateDiscountViewModel()
         {
             Id = discount.Id,
             Reduction = discount.Reduction,
             Name = discount.Name,
-            CreatedAt = discount.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

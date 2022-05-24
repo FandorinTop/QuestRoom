@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+            <ProjectReference Include="..\..\QuestRoom.BusinessLogic\QuestRoom.BusinessLogic.csproj" />
             <ProjectReference Include="..\..\QuestRoom.DataAccess\QuestRoom.DataAccess.csproj" />
 <ProjectReference Include="..\Client\QuestRoom.Web.Client.csproj" />
     </ItemGroup>

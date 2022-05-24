@@ -30,7 +30,7 @@ namespace QuestRoom.BusinessLogic
             return quest.Id;
         }
 
-        public async Task<GetQuestViewModel> Get(int id)
+        public async Task<UpdateQuestViewModel> Get(int id)
         {
             var Quest = await repository.GetByIdAsync(id);
 
@@ -83,11 +83,10 @@ namespace QuestRoom.BusinessLogic
             Quest.Price = viewModel.Price;
         }
 
-        private GetQuestViewModel Extract(Quest Quest) => new GetQuestViewModel()
+        private UpdateQuestViewModel Extract(Quest Quest) => new UpdateQuestViewModel()
         {
             Id = Quest.Id,
             Name = Quest.Name,
-            CreatedAt = Quest.CreatedAt,
             AgeRestriction = Quest.AgeRestriction,
             Description = Quest.Description,
             Duration = Quest.Duration,
@@ -95,5 +94,10 @@ namespace QuestRoom.BusinessLogic
             MinPlayerCount = Quest.MinPlayerCount,
             Price = Quest.Price
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

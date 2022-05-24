@@ -38,7 +38,7 @@ namespace QuestRoom.BusinessLogic
             return personal.Id;
         }
 
-        public async Task<GetPersonalViewModel> Get(int id)
+        public async Task<UpdatePersonalViewModel> Get(int id)
         {
             var Personal = await repository.GetByIdAsync(id);
 
@@ -92,17 +92,20 @@ namespace QuestRoom.BusinessLogic
             Personal.BirthDate = viewModel.BirthDate;
         }
 
-        private GetPersonalViewModel Extract(Personal personal) => new GetPersonalViewModel()
+        private UpdatePersonalViewModel Extract(Personal personal) => new UpdatePersonalViewModel()
         {
             Id = personal.Id,
             Name = personal.Name,
-            CreatedAt = personal.CreatedAt,
             BirthDate = personal.BirthDate,
             Email = personal.Email,
             Gender = personal.Gender,
             PersonalTypeId = personal.PersonalTypeId,
-            PersonalTypeName = personal.PersonalType.Name,
             PhoneNumber = personal.PhoneNumber
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

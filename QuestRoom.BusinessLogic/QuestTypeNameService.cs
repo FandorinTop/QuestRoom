@@ -37,7 +37,7 @@ namespace QuestRoom.BusinessLogic
             return questTypeName.Id;
         }
 
-        public async Task<GetQuestTypeNameViewModel> Get(int id)
+        public async Task<UpdateQuestTypeNameViewModel> Get(int id)
         {
             var questTypeName = await repository.GetByIdAsync(id);
 
@@ -88,11 +88,15 @@ namespace QuestRoom.BusinessLogic
             discount.Name = viewModel.Name;
         }
 
-        private GetQuestTypeNameViewModel Extract(QuestTypeName discount) => new GetQuestTypeNameViewModel()
+        private UpdateQuestTypeNameViewModel Extract(QuestTypeName discount) => new UpdateQuestTypeNameViewModel()
         {
             Id = discount.Id,
             Name = discount.Name,
-            CreatedAt = discount.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

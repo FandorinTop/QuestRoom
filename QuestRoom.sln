@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.Common", "QuestRo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.DataAccess", "QuestRoom.DataAccess\QuestRoom.DataAccess.csproj", "{DC634162-AE48-4544-9E29-6E13E289271E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestRoom.Web.Server", "QuestRoom.Web\Server\QuestRoom.Web.Server.csproj", "{03B0AE42-3E46-48C8-A38D-47E01F1380E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.Web.Server", "QuestRoom.Web\Server\QuestRoom.Web.Server.csproj", "{03B0AE42-3E46-48C8-A38D-47E01F1380E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestRoom.Web.Client", "QuestRoom.Web\Client\QuestRoom.Web.Client.csproj", "{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.Web.Client", "QuestRoom.Web\Client\QuestRoom.Web.Client.csproj", "{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,12 @@
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using QuestRoom.BusinessLogic;
 using QuestRoom.DataAccess;
+using QuestRoom.DataAccess.Repositories;
+using QuestRoom.DataAccess.UnitOfWork;
+using QuestRoom.Interfaces.Repositories;
+using QuestRoom.Interfaces.Services;
+using QuestRoom.Interfaces.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,3 +52,35 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
+
+
+void InjectServices(IServiceCollection service)
+{
+    service.AddTransient<IClientService, ClientService>();
+    service.AddTransient<IDiscountService, DiscountService>();
+    service.AddTransient<IPersonalService, PersonalService>();
+    service.AddTransient<IPersonalTypeService, PersonalTypeService>();
+    service.AddTransient<IQuestActorService, QuestActorService>();
+    service.AddTransient<IQuestService, QuestService>();
+    service.AddTransient<IQuestTypeNameService, QuestTypeNameService>();
+    service.AddTransient<IQuestTypeService, QuestTypeService>();
+
+    //service.AddTransient<IQuestActorSetService, QuestActorSetService>();
+    //service.AddTransient<IQuestSessionService, QuestSessionService>();
+
+}
+
+void InjectRepository(IServiceCollection service)
+{
+    service.AddTransient<IDiscountRepository, DiscountRepository>();
+    service.AddTransient<IPersonalRepository, PersonalRepository>();
+    service.AddTransient<IPersonalTypeRepository, PersonalTypeRepository>();
+    service.AddTransient<IQuestActorRepository, QuestActorRepository>();
+    service.AddTransient<IQuestActorSetRepository, QuestActorSetRepository>();
+    service.AddTransient<IQuestRepository, QuestRepository>();
+    service.AddTransient<IQuestSessionRepository, QuestSessionRepository>();
+    service.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
+    service.AddTransient<IQuestTypeNameRepository, QuestTypeNameRepository>();
+    service.AddTransient<IClientRepository, IClientRepository>();
+    service.AddTransient<IUnitOfWork, UnitOfWork>();
+}

@@ -15,7 +15,9 @@ namespace QuestRoom.Interfaces.Services
 
         public Task Update(UpdateDiscountViewModel viewModel);
 
-        public Task<GetDiscountViewModel> Get(int id);
+        public Task<UpdateDiscountViewModel> Get(int id);
+
+        public Task Delete(int id);
 
         public Task<ApiResultViewModel<GetDiscountViewModel>> GetAll(int pageIndex, int pageSize, IEnumerable<FilterRequest> filters, IEnumerable<SortingRequest> sorting);
     }

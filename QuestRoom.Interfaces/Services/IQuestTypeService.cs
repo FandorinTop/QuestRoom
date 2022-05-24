@@ -10,7 +10,9 @@ namespace QuestRoom.Interfaces.Services
 
         public Task Update(UpdateQuestTypeViewModel viewModel);
 
-        public Task<GetQuestTypeViewModel> Get(int id);
+        public Task<UpdateQuestTypeViewModel> Get(int id);
+
+        public Task Delete(int id);
 
         public Task<ApiResultViewModel<GetQuestTypeViewModel>> GetAll(int pageIndex, int pageSize, IEnumerable<FilterRequest> filters, IEnumerable<SortingRequest> sorting);
     }

@@ -30,7 +30,7 @@ namespace QuestRoom.BusinessLogic
             return client.Id;
         }
 
-        public async Task<GetClientViewModel> Get(int id)
+        public async Task<UpdateClientViewModel> Get(int id)
         {
             var Client = await repository.GetByIdAsync(id);
 
@@ -77,13 +77,17 @@ namespace QuestRoom.BusinessLogic
             client.PhoneNumbe = viewModel.PhoneNumbe;
         }
 
-        private GetClientViewModel Extract(Client client) => new GetClientViewModel()
+        private UpdateClientViewModel Extract(Client client) => new UpdateClientViewModel()
         {
             Id = client.Id,
             Name = client.Name,
             Email = client.Email,
             PhoneNumbe = client.PhoneNumbe,
-            CreatedAt = client.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }

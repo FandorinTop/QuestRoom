@@ -12,6 +12,8 @@ namespace QuestRoom.Interfaces.Services
 
         public Task<GetQuestSessionViewModel> Get(int id);
 
+        public Task Delete(int id);
+
         public Task<ApiResultViewModel<GetQuestSessionViewModel>> GetAll(int pageIndex, int pageSize, IEnumerable<FilterRequest> filters, IEnumerable<SortingRequest> sorting);
     }
 }

@@ -27,7 +27,7 @@ namespace QuestRoom.BusinessLogic
             return QuestTypeId;
         }
 
-        public async Task<GetQuestTypeViewModel> Get(int id)
+        public async Task<UpdateQuestTypeViewModel> Get(int id)
         {
             var QuestType = await repository.GetByIdAsync(id);
 
@@ -56,12 +56,16 @@ namespace QuestRoom.BusinessLogic
             }, pageIndex, pageSize, sorting, filters);
         }
 
-        private GetQuestTypeViewModel Extract(QuestType item) => new GetQuestTypeViewModel()
+        private UpdateQuestTypeViewModel Extract(QuestType item) => new UpdateQuestTypeViewModel()
         {
             Id = item.Id,
             QuestRoomId = item.QuestRoomId,
             QuestTypeId = item.TypeId,
-            CreatedAt = item.CreatedAt
         };
+
+        public async Task Delete(int id)
+        {
+            await repository.DeleteAsync(id);
+        }
     }
 }
