@@ -10,6 +10,6 @@ namespace QuestRoom.ViewModel.QuestActor.Request
     {
         public int PersonalId { get; set; }
 
-        public int QuestActorSetId { get; set; }
+        public int QuestId { get; set; }
     }
 }

@@ -35,5 +35,7 @@ namespace QuestRoom.DomainModel
         public int? AgeRestriction { get; set; }
 
         public virtual List<QuestType> Types { get; set; } = new List<QuestType>();
+        public virtual List<QuestSession> Sessions { get; set; } = new List<QuestSession>();
+        public virtual List<QuestActor> Actors { get; set; } = new List<QuestActor>();
     }
 }

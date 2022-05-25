@@ -7,11 +7,11 @@ namespace QuestRoom.Web.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class QuestTypeNameTypeNameController : ControllerBase
+    public class QuestTypeNameController : ControllerBase
     {
         IQuestTypeNameService _QuestTypeNameService;
 
-        public QuestTypeNameTypeNameController(IQuestTypeNameService QuestTypeNameService)
+        public QuestTypeNameController(IQuestTypeNameService QuestTypeNameService)
         {
             _QuestTypeNameService = QuestTypeNameService;
         }

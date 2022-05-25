@@ -24,7 +24,7 @@ namespace QuestRoom.BusinessLogic
         {
             var discount = await repository.FindByName(viewModel.Name);
 
-            if (discount is null)
+            if (discount is not null)
             {
                 throw new ServiceValidationException($"Db already has discount with name: {viewModel.Name}, discountId: '{discount.Id}'");
             }
@@ -54,25 +54,22 @@ namespace QuestRoom.BusinessLogic
         {
             var discount = await repository.FindByName(viewModel.Name);
 
-            if (discount.Id != viewModel.Id)
+            if (discount?.Id != viewModel.Id && discount != null)
             {
                 throw new ServiceValidationException($"Db already has discount with name: {viewModel.Name}, discountId: '{discount.Id}'");
             }
-            else
-            {
-                discount = await repository.GetByIdAsync(viewModel.Id);
 
-                if(discount is null)
-                {
-                    throw new ServiceValidationException($"No discount with id: '{viewModel.Id}'");
-                }
+            discount = await repository.GetByIdAsync(viewModel.Id);
+
+            if (discount is null)
+            {
+                throw new ServiceValidationException($"No discount with id: '{viewModel.Id}'");
             }
 
             Map(discount, viewModel);
 
             repository.Update(discount);
             await _unitOfWork.SaveAsync();
-
         }
 
         public async Task<ApiResultViewModel<GetDiscountViewModel>> GetAll(int pageIndex, int pageSize, IEnumerable<FilterRequest> filters, IEnumerable<SortingRequest> sorting)

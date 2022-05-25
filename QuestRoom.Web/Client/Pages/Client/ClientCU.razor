@@ -1,8 +1,9 @@
-﻿@page "/QuestTypeName/{Id:int?}"
+﻿@page "/Client/{Id:int?}"
 
 @using System.ComponentModel.DataAnnotations
 @using System.IO
 @using System.Net.Http.Headers
+@using QuestRoom.ViewModel.Client.Request
 @using QuestRoom.ViewModel.Type.Request
 @inject NavigationManager navManager;
 
@@ -23,6 +24,20 @@
                     </p>
                 </div>
 
+                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.Email)" @bind-Value="Model.Email" />
+                        <ValidationMessage For="@(() => Model.Email)" />
+                    </p>
+                </div>
+
+                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.PhoneNumbe)" @bind-Value="Model.PhoneNumbe" />
+                        <ValidationMessage For="@(() => Model.PhoneNumbe)" />
+                    </p>
+                </div>
+
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
@@ -40,7 +55,7 @@
     {
         get
         {
-            return Id == null ? "Create QuestTypeName" : $"Edit QuestTypeName with id: '{Id}'";
+            return Id == null ? "Create Client" : $"Edit Client with id: '{Id}'";
         }
     }
 
@@ -53,7 +68,7 @@
     [Parameter]
     public int? Id { get; set; } = default;
 
-    private UpdateQuestTypeNameViewModel Model { get; set; } = new UpdateQuestTypeNameViewModel();
+    private UpdateClientViewModel Model { get; set; } = new UpdateClientViewModel();
 
     public async Task Success()
     {
@@ -78,8 +93,8 @@
     {
         if (Id != default)
         {
-            var responce = await HttpClient.GetAsync($"api/QuestTypeName/Get?id={Id}");
-            var result = await responce.Content.ReadFromJsonAsync<UpdateQuestTypeNameViewModel>();
+            var responce = await HttpClient.GetAsync($"api/Client/Get?id={Id}");
+            var result = await responce.Content.ReadFromJsonAsync<UpdateClientViewModel>();
 
             Console.WriteLine("getResult: " + result);
 
@@ -89,14 +104,14 @@
 
     private async Task CreateAsync()
     {
-        var result = await HttpClient.PostAsJsonAsync(@"api/QuestTypeName/Create", Model);
+        var result = await HttpClient.PostAsJsonAsync(@"api/Client/Create", Model);
 
         if (result.IsSuccessStatusCode)
         {
             var id = await result.Content.ReadAsStringAsync();
             Id = Convert.ToInt32(id);
             await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/QuestTypeName/{Id}");
+            navManager.NavigateTo($"/Client/{Id}");
         }
         else
         {
@@ -106,13 +121,13 @@
 
     private async Task UpdateAsync()
     {
-        var updateModel = new UpdateQuestTypeNameViewModel()
+        var updateModel = new UpdateClientViewModel()
             {
                 Id = Id.Value,
                 Name = Model.Name
             };
 
-        var result = await HttpClient.PutAsJsonAsync(@"api/QuestTypeName/Update", updateModel);
+        var result = await HttpClient.PutAsJsonAsync(@"api/Client/Update", updateModel);
 
         if (result.IsSuccessStatusCode)
         {

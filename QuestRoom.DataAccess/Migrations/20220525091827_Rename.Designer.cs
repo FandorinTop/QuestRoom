@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuestRoom.DataAccess;
 
@@ -11,9 +12,10 @@ using QuestRoom.DataAccess;
 namespace QuestRoom.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220525091827_Rename")]
+    partial class Rename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,16 +226,40 @@ namespace QuestRoom.DataAccess.Migrations
                     b.Property<int>("PersonalId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestId")
+                    b.Property<int>("QuestActorSetId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonalId");
 
-                    b.HasIndex("QuestId");
+                    b.HasIndex("QuestActorSetId");
 
                     b.ToTable("QuestActors");
+                });
+
+            modelBuilder.Entity("QuestRoom.DomainModel.QuestActorSet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeltedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("QuestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestId");
+
+                    b.ToTable("ActorSets");
                 });
 
             modelBuilder.Entity("QuestRoom.DomainModel.QuestSession", b =>
@@ -259,7 +285,7 @@ namespace QuestRoom.DataAccess.Migrations
                     b.Property<int>("ParticipantCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestId")
+                    b.Property<int>("QuestActorSetId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartedAt")
@@ -271,7 +297,7 @@ namespace QuestRoom.DataAccess.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.HasIndex("QuestId");
+                    b.HasIndex("QuestActorSetId");
 
                     b.ToTable("QuestSession");
                 });
@@ -353,13 +379,24 @@ namespace QuestRoom.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QuestRoom.DomainModel.Quest", "Quest")
+                    b.HasOne("QuestRoom.DomainModel.QuestActorSet", "QuestActorSet")
                         .WithMany("Actors")
-                        .HasForeignKey("QuestId")
+                        .HasForeignKey("QuestActorSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Personal");
+
+                    b.Navigation("QuestActorSet");
+                });
+
+            modelBuilder.Entity("QuestRoom.DomainModel.QuestActorSet", b =>
+                {
+                    b.HasOne("QuestRoom.DomainModel.Quest", "Quest")
+                        .WithMany()
+                        .HasForeignKey("QuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Quest");
                 });
@@ -376,9 +413,9 @@ namespace QuestRoom.DataAccess.Migrations
                         .WithMany("QuestSessions")
                         .HasForeignKey("DiscountId");
 
-                    b.HasOne("QuestRoom.DomainModel.Quest", "Quest")
-                        .WithMany("Sessions")
-                        .HasForeignKey("QuestId")
+                    b.HasOne("QuestRoom.DomainModel.QuestActorSet", "QuestActorSet")
+                        .WithMany("QuestSessions")
+                        .HasForeignKey("QuestActorSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -386,7 +423,7 @@ namespace QuestRoom.DataAccess.Migrations
 
                     b.Navigation("Discount");
 
-                    b.Navigation("Quest");
+                    b.Navigation("QuestActorSet");
                 });
 
             modelBuilder.Entity("QuestRoom.DomainModel.QuestType", b =>
@@ -420,11 +457,14 @@ namespace QuestRoom.DataAccess.Migrations
 
             modelBuilder.Entity("QuestRoom.DomainModel.Quest", b =>
                 {
+                    b.Navigation("Types");
+                });
+
+            modelBuilder.Entity("QuestRoom.DomainModel.QuestActorSet", b =>
+                {
                     b.Navigation("Actors");
 
-                    b.Navigation("Sessions");
-
-                    b.Navigation("Types");
+                    b.Navigation("QuestSessions");
                 });
 
             modelBuilder.Entity("QuestRoom.DomainModel.QuestTypeName", b =>

@@ -1,0 +1,211 @@
+﻿@page "/Personal/{Id:int?}"
+
+@using System.ComponentModel.DataAnnotations
+@using System.IO
+@using System.Net.Http.Headers
+@using QuestRoom.Common
+@using QuestRoom.ViewModel.Personal.Request
+@using QuestRoom.ViewModel.PersonalType.Responce
+@using QuestRoom.ViewModel.Type.Request
+@inject NavigationManager navManager;
+
+<EditForm Model="Model" OnValidSubmit="Success">
+    <DataAnnotationsValidator />
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            @Title
+        </div>
+        <MatDivider />
+        <br />
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.Name)" @bind-Value="Model.Name" />
+                        <ValidationMessage For="@(() => Model.Name)" />
+                    </p>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatDatePicker Label="@nameof(Model.BirthDate)" @bind-Value="Model.BirthDate" />
+                        <ValidationMessage For="@(() => Model.BirthDate)" />
+                    </p>
+                </div><div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.Email)" @bind-Value="Model.Email" />
+                        <ValidationMessage For="@(() => Model.Email)" />
+                    </p>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatTextField Label="@nameof(Model.PhoneNumber)" @bind-Value="Model.PhoneNumber" />
+                        <ValidationMessage For="@(() => Model.PhoneNumber)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatSelectValue Label="Genders" @bind-Value="@Model.Gender" Items="@Genders" ValueSelector="@(item1 => item1)" FullWidth="true">
+                        </MatSelectValue>
+                        <ValidationMessage For="@(() => Model.Gender)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatAutocompleteList 
+                            Context="type" 
+                            Items="@TypeSelector" 
+                            TItem="GetPersonalTypeViewModel" 
+                            Label="Select Type" 
+                            CustomStringSelector="@(i => i.Name)" 
+                            @bind-Value="@SelectedType" 
+                            @onchange="OnNullType">
+                            <ItemTemplate>
+                                <div style="display: flex; flex-direction: row; width: 100%;">
+                                    <div style="flex: 1;">@type.Name</div>
+                                </div>
+                            </ItemTemplate>
+                        </MatAutocompleteList>
+                        <ValidationMessage For="@(() => Model.PersonalTypeId)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatButton Type="submit" Raised="true">Send</MatButton>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private string Title
+    {
+        get
+        {
+            return Id == null ? "Create Personal" : $"Edit Personal with id: '{Id}'";
+        }
+    }
+
+    public Gender[] Genders = new[]
+        {
+            Gender.None,
+            Gender.Male,
+            Gender.Female,
+    };
+
+    [Inject]
+    HttpClient HttpClient { get; set; }
+
+    [Inject]
+    IJSRuntime JS { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; } = default;
+
+    private UpdatePersonalViewModel Model { get; set; } = new UpdatePersonalViewModel();
+
+    private List<GetPersonalTypeViewModel> TypeSelector { get; set; } = new List<GetPersonalTypeViewModel>();
+
+    private GetPersonalTypeViewModel SelectedType { get; set; }
+
+
+    public async Task Success()
+    {
+        Console.WriteLine("Success");
+
+        if (Id == null)
+        {
+            await CreateAsync();
+        }
+        else
+        {
+            await UpdateAsync();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAsync();
+        await GetSelectorPersonalType();
+    }
+
+    private async Task GetSelectorPersonalType()
+    {
+        var responce = await HttpClient.PostAsJsonAsync($"api/PersonalType/GetApiResponce", new GetApiBodyRequest()
+        {
+            PageIndex = 0,
+            PageSize = 1000
+        });
+
+        var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetPersonalTypeViewModel>>();
+        Console.WriteLine("getResult: " + result);
+
+        TypeSelector = result?.Data.ToList() ?? TypeSelector;
+    }
+
+    private async Task GetAsync()
+    {
+        if (Id != default)
+        {
+            var responce = await HttpClient.GetAsync($"api/Personal/Get?id={Id}");
+            var result = await responce.Content.ReadFromJsonAsync<UpdatePersonalViewModel>();
+
+            Console.WriteLine("getResult: " + result);
+
+            Model = result ?? Model;
+        }
+    }
+
+    private async Task CreateAsync()
+    {
+        var result = await HttpClient.PostAsJsonAsync(@"api/Personal/Create", Model);
+
+        if (result.IsSuccessStatusCode)
+        {
+            var id = await result.Content.ReadAsStringAsync();
+            Id = Convert.ToInt32(id);
+            await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
+            navManager.NavigateTo($"/Personal/{Id}");
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("alert", $"CreationError {await result.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        var updateModel = new UpdatePersonalViewModel()
+            {
+                Id = Id.Value,
+                Name = Model.Name
+            };
+
+        var result = await HttpClient.PutAsJsonAsync(@"api/Personal/Update", updateModel);
+
+        if (result.IsSuccessStatusCode)
+        {
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("alert", $"UpdateError {await result.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    private void OnNullType(object obj)
+        {
+            var res = obj as GetPersonalTypeViewModel;
+
+            if (res is not null)
+            {
+                Model.PersonalTypeId = res.Id;
+            }
+        }
+}

@@ -12,9 +12,9 @@ namespace QuestRoom.DataAccess.Repositories
         {
         }
 
-        public async Task<int> CreateSingle(int personalId, int actorSetId)
+        public async Task<int> CreateSingle(int personalId, int questId)
         {
-            var questActor = await context.QuestActors.FirstOrDefaultAsync(item => item.PersonalId == personalId && item.QuestActorSetId == actorSetId);
+            var questActor = await context.QuestActors.FirstOrDefaultAsync(item => item.PersonalId == personalId && item.QuestId == questId);
 
             if(questActor != null)
             {
@@ -23,7 +23,7 @@ namespace QuestRoom.DataAccess.Repositories
             else
             {
                 var personal = await context.Personals.FindAsync(personalId);
-                var actorSet = await context.ActorSets.FindAsync(actorSetId);
+                var actorSet = await context.Quests.FindAsync(questId);
 
                 if (actorSet is null)
                 {
@@ -38,7 +38,7 @@ namespace QuestRoom.DataAccess.Repositories
                 questActor = new QuestActor()
                 {
                     PersonalId = personalId,
-                    QuestActorSetId = actorSetId,
+                    QuestId = questId,
                 };
 
                 await InsertAsync(questActor);

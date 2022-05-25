@@ -23,7 +23,7 @@ namespace QuestRoom.BusinessLogic
         {
             var questTypeName = await repository.FindByName(viewModel.Name);
 
-            if (questTypeName is null)
+            if (questTypeName is not null)
             {
                 throw new ServiceValidationException($"Db already has QuestTypeName with name: {viewModel.Name}, QuestTypeNameId: '{questTypeName.Id}'");
             }
@@ -63,18 +63,17 @@ namespace QuestRoom.BusinessLogic
         {
             var questTypeName = await repository.FindByName(viewModel.Name);
 
-            if (questTypeName.Id != viewModel.Id)
+
+            if (questTypeName?.Id != viewModel.Id && questTypeName != null)
             {
                 throw new ServiceValidationException($"Db already has questTypeName with name: {viewModel.Name}, questTypeNameId: '{questTypeName.Id}'");
             }
-            else
-            {
-                questTypeName = await repository.GetByIdAsync(viewModel.Id);
 
-                if (questTypeName is null)
-                {
-                    throw new ServiceValidationException($"No questTypeName with id: '{viewModel.Id}'");
-                }
+            questTypeName = await repository.GetByIdAsync(viewModel.Id);
+
+            if (questTypeName is null)
+            {
+                throw new ServiceValidationException($"No questTypeName with id: '{viewModel.Id}'");
             }
 
             Map(questTypeName, viewModel);

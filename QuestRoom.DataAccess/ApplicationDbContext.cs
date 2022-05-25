@@ -17,9 +17,6 @@ namespace QuestRoom.DataAccess
 
         public DbSet<Personal> Personals { get; set; }
 
-
-        public DbSet<QuestActorSet> ActorSets { get; set; }
-
         public DbSet<QuestActor> QuestActors { get; set; }
 
         public DbSet<Discount> Discounts { get; set; }

@@ -23,7 +23,7 @@ namespace QuestRoom.BusinessLogic
         {
             var personalType = await repository.FindByName(viewModel.Name);
 
-            if (personalType is null)
+            if (personalType is not null)
             {
                 throw new ServiceValidationException($"Db already has PersonalType with name: {viewModel.Name}, PersonalTypeId: '{personalType.Id}'");
             }
@@ -53,18 +53,16 @@ namespace QuestRoom.BusinessLogic
         {
             var personalType = await repository.FindByName(viewModel.Name);
 
-            if (personalType.Id != viewModel.Id)
+            if (personalType?.Id != viewModel.Id && personalType != null)
             {
                 throw new ServiceValidationException($"Db already has PersonalType with name: {viewModel.Name}, PersonalTypeId: '{personalType.Id}'");
             }
-            else
-            {
-                personalType = await repository.GetByIdAsync(viewModel.Id);
 
-                if (personalType is null)
-                {
-                    throw new ServiceValidationException($"No PersonalType with id: '{viewModel.Id}'");
-                }
+            personalType = await repository.GetByIdAsync(viewModel.Id);
+
+            if (personalType is null)
+            {
+                throw new ServiceValidationException($"No PersonalType with id: '{viewModel.Id}'");
             }
 
             Map(personalType, viewModel);

@@ -13,6 +13,6 @@ namespace QuestRoom.ViewModel.QuestActor.Responce
 
         public string PersonalName { get; set; }
 
-        public int QuestActorSetId { get; set; }
+        public int QuestId { get; set; }
     }
 }

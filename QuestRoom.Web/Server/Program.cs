@@ -16,6 +16,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 // Add services to the container.
 
+InjectServices(builder.Services);
+InjectRepository(builder.Services);
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen();
@@ -65,7 +68,6 @@ void InjectServices(IServiceCollection service)
     service.AddTransient<IQuestTypeNameService, QuestTypeNameService>();
     service.AddTransient<IQuestTypeService, QuestTypeService>();
 
-    //service.AddTransient<IQuestActorSetService, QuestActorSetService>();
     //service.AddTransient<IQuestSessionService, QuestSessionService>();
 
 }
@@ -76,11 +78,10 @@ void InjectRepository(IServiceCollection service)
     service.AddTransient<IPersonalRepository, PersonalRepository>();
     service.AddTransient<IPersonalTypeRepository, PersonalTypeRepository>();
     service.AddTransient<IQuestActorRepository, QuestActorRepository>();
-    service.AddTransient<IQuestActorSetRepository, QuestActorSetRepository>();
     service.AddTransient<IQuestRepository, QuestRepository>();
     service.AddTransient<IQuestSessionRepository, QuestSessionRepository>();
     service.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
     service.AddTransient<IQuestTypeNameRepository, QuestTypeNameRepository>();
-    service.AddTransient<IClientRepository, IClientRepository>();
+    service.AddTransient<IClientRepository, ClientRepository>();
     service.AddTransient<IUnitOfWork, UnitOfWork>();
 }

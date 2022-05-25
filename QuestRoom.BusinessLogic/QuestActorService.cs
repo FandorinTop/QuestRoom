@@ -21,7 +21,7 @@ namespace QuestRoom.BusinessLogic
 
         public async Task<int> Create(CreateQuestActorViewModel viewModel)
         {
-            var questActorId = await repository.CreateSingle(viewModel.PersonalId, viewModel.QuestActorSetId);
+            var questActorId = await repository.CreateSingle(viewModel.PersonalId, viewModel.QuestId);
             await _unitOfWork.SaveAsync();
 
             return questActorId;
@@ -41,7 +41,7 @@ namespace QuestRoom.BusinessLogic
 
         public async Task Update(UpdateQuestActorViewModel viewModel)
         {
-            var questActorId = await repository.CreateSingle(viewModel.PersonalId, viewModel.QuestActorSetId);
+            var questActorId = await repository.CreateSingle(viewModel.PersonalId, viewModel.QuestId);
             await _unitOfWork.SaveAsync();
         }
 
@@ -51,7 +51,7 @@ namespace QuestRoom.BusinessLogic
             {
                 Id = item.Id,
                 PersonalId = item.PersonalId,
-                QuestActorSetId = item.QuestActorSetId,
+                QuestId = item.QuestId,
                 PersonalName = item.Personal.Name,
                 CreatedAt = item.CreatedAt
             }, pageIndex, pageSize, sorting, filters);
@@ -61,7 +61,7 @@ namespace QuestRoom.BusinessLogic
         {
             Id = item.Id,
             PersonalId = item.PersonalId,
-            QuestActorSetId = item.QuestActorSetId,
+            QuestId = item.QuestId,
         };
 
         public async Task Delete(int id)

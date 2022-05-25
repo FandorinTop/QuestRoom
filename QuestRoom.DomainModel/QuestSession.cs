@@ -10,9 +10,9 @@
 
         public virtual Client Client { get; set; }
 
-        public int QuestActorSetId { get; set; }
+        public int QuestId { get; set; }
 
-        public virtual QuestActorSet QuestActorSet { get; set; }
+        public virtual Quest Quest { get; set; }
 
         public int? DiscountId { get; set; }
 

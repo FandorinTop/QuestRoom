@@ -19,7 +19,7 @@ namespace QuestRoom.DomainModel
             }
             set
             {
-                if (!string.IsNullOrEmpty(name))
+                if (!string.IsNullOrEmpty(value))
                 {
                     name = value;
                     NormalizedName = name.ToUpperInvariant();
