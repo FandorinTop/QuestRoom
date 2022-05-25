@@ -58,11 +58,11 @@
                                              @ref=personalTypeList
                                              TItem="GetPersonalTypeViewModel"
                                              Label="Select Type"
-                                             CustomStringSelector="@(i => i.Name)"
+                                             CustomStringSelector="@(i => i?.Name)"
                                              ValueChanged="OnNullType">
                             <ItemTemplate>
                                 <div style="display: flex; flex-direction: row; width: 100%;">
-                                    <div style="flex: 1;">@type.Name</div>
+                                    <div style="flex: 1;">@type?.Name</div>
                                 </div>
                             </ItemTemplate>
                         </MatAutocompleteList>
@@ -84,6 +84,7 @@
 
 @code {
     MatAutocompleteList<GetPersonalTypeViewModel> personalTypeList;
+
     private string Title
     {
         get
@@ -133,6 +134,14 @@
     {
         await GetSelectorPersonalType();
         await GetAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (Model.PersonalTypeId.HasValue)
+        {
+            personalTypeList.Value = TypeSelector.FirstOrDefault(item => item.Id == Model.PersonalTypeId.Value) ?? SelectedType;
+        }
     }
 
     private async Task GetSelectorPersonalType()

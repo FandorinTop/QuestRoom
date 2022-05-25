@@ -96,6 +96,7 @@ namespace QuestRoom.BusinessLogic
         public async Task Delete(int id)
         {
             await repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

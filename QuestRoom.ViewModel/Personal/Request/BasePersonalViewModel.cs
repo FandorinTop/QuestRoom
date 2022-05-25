@@ -20,7 +20,7 @@ namespace QuestRoom.ViewModel.Personal.Request
         public Gender Gender { get; set; }
 
         [Required]
-        public int PersonalTypeId { get; set; } = default!;
+        public int? PersonalTypeId { get; set; } = default!;
 
         [Required]
         [EmailAddress]

@@ -30,6 +30,7 @@ namespace QuestRoom.ViewModel.Quest.Request
 
         public decimal Price { get; set; }
 
-        public int QuestTypeId { get; set; }
+        [Required]
+        public int? QuestTypeId { get; set; }
     }
 }

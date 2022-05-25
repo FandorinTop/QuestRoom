@@ -23,7 +23,7 @@ namespace QuestRoom.BusinessLogic
 
         public async Task<int> Create(CreatePersonalViewModel viewModel)
         {
-            var type = await typeRepository.GetByIdAsync(viewModel.PersonalTypeId);
+            var type = await typeRepository.GetByIdAsync(viewModel.PersonalTypeId.Value);
 
             if (type is null)
             {
@@ -60,7 +60,7 @@ namespace QuestRoom.BusinessLogic
                 throw new ServiceValidationException($"No Personal with id: '{viewModel.Id}'");
             }
 
-            var type = await typeRepository.GetByIdAsync(viewModel.PersonalTypeId);
+            var type = await typeRepository.GetByIdAsync(viewModel.PersonalTypeId.Value);
 
             if (type is null)
             {
@@ -92,7 +92,7 @@ namespace QuestRoom.BusinessLogic
         private void Map(Personal Personal, BasePersonalViewModel viewModel)
         {
             Personal.Name = viewModel.Name;
-            Personal.PersonalTypeId = viewModel.PersonalTypeId;
+            Personal.PersonalTypeId = viewModel.PersonalTypeId.Value;
             Personal.Email = viewModel.Email;
             Personal.Gender = viewModel.Gender;
             Personal.PhoneNumber = viewModel.PhoneNumber;
@@ -113,6 +113,7 @@ namespace QuestRoom.BusinessLogic
         public async Task Delete(int id)
         {
             await repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

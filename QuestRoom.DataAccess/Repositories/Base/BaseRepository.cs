@@ -37,7 +37,7 @@ namespace QuestRoom.DataAccess.Repositories.Base
         {
             TEntity entityToDelete = await dbSet.FindAsync(id);
 
-            if (entityToDelete is null)
+            if (entityToDelete is not null)
             {
                 Delete(entityToDelete);
             }
@@ -69,6 +69,7 @@ namespace QuestRoom.DataAccess.Repositories.Base
                     context.Dispose();
                 }
             }
+
             disposed = true;
         }
 

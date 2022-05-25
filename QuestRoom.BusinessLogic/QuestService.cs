@@ -74,7 +74,8 @@ namespace QuestRoom.BusinessLogic
                 Duration = item.Duration,
                 MaxPlayerCount = item.MaxPlayerCount,
                 MinPlayerCount = item.MinPlayerCount,
-                Price = item.Price
+                Price = item.Price,
+                Type = item.QuestTypeName.Name
             }, pageIndex, pageSize, sorting, filters);
         }
 
@@ -87,7 +88,7 @@ namespace QuestRoom.BusinessLogic
             quest.MaxPlayerCount = viewModel.MaxPlayerCount;
             quest.MinPlayerCount = viewModel.MinPlayerCount;
             quest.Price = viewModel.Price;
-            quest.QuestTypeNameId = viewModel.QuestTypeId;
+            quest.QuestTypeNameId = viewModel.QuestTypeId.Value;
         }
 
         private UpdateQuestViewModel Extract(Quest quest) => new UpdateQuestViewModel()
@@ -99,17 +100,19 @@ namespace QuestRoom.BusinessLogic
             Duration = quest.Duration,
             MaxPlayerCount = quest.MaxPlayerCount,
             MinPlayerCount = quest.MinPlayerCount,
+            QuestTypeId = quest.QuestTypeNameId,
             Price = quest.Price
         };
 
         public async Task Delete(int id)
         {
             await repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task Validate(BaseQuestViewModel viewModel)
         {
-            var questType = await typeRepository.GetByIdAsync(viewModel.QuestTypeId);
+            var questType = await typeRepository.GetByIdAsync(viewModel.QuestTypeId.Value);
 
             if(questType is null)
             {

@@ -26,7 +26,7 @@
             <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
-                        <MatDatePicker Label="@nameof(Model.StartedAt)" @bind-Value="Model.StartedAt" />
+                        <MatDatePicker Label="@nameof(Model.StartedAt)" @bind-Value="Model.StartedAt"  EnableTime="true" Enable24hours="true"/> 
                         <ValidationMessage For="@(() => Model.StartedAt)" />
                     </p>
                 </div>
@@ -34,12 +34,12 @@
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
                         <MatAutocompleteList Context="type"
+                                             @ref = "clientAutocompleteList"
                                              Items="@ClientSelector"
                                              TItem="GetClientViewModel"
                                              Label="Select Client"
                                              CustomStringSelector="@(i => i.Name)"
-                                             @bind-Value="@SelectedClient"
-                                             @onchange="OnNullClient">
+                                             ValueChanged = "OnNullClient">
                             <ItemTemplate>
                                 <div style="display: flex; flex-direction: row; width: 100%;">
                                     <div style="flex: 1;">@type.Name</div>
@@ -53,12 +53,12 @@
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
                         <MatAutocompleteList Context="type"
+                                             @ref = "questAutocompleteList"
                                              Items="@QuestSelector"
                                              TItem="GetQuestViewModel"
                                              Label="Select Quest"
                                              CustomStringSelector="@(i => i.Name)"
-                                             @bind-Value="@SelectedQuest"
-                                             @onchange="OnNullQuest">
+                                             ValueChanged = "OnNullQuest">
                             <ItemTemplate>
                                 <div style="display: flex; flex-direction: row; width: 100%;">
                                     <div style="flex: 1;">@type.Name</div>
@@ -71,20 +71,19 @@
 
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
-                        <MatAutocompleteList Context="type"
+                        <MatAutocompleteList Context="type" 
+                                             @ref = "discountAutocompleteList"
                                              Items="@DiscountSelector"
                                              TItem="GetDiscountViewModel"
                                              Label="Select Discount"
                                              CustomStringSelector="@(i => i.Name)"
-                                             @bind-Value="@SelectedDiscount"
-                                             @onchange="OnNullDiscount">
+                                             ValueChanged = "OnNullDiscount">
                             <ItemTemplate>
                                 <div style="display: flex; flex-direction: row; width: 100%;">
                                     <div style="flex: 1;">@type.Name</div>
                                 </div>
                             </ItemTemplate>
                         </MatAutocompleteList>
-                        <ValidationMessage For="@(() => Model.QuestId)" />
                     </p>
                 </div>
 
@@ -101,6 +100,29 @@
 </EditForm>
 
 @code {
+    MatAutocompleteList<GetClientViewModel> clientAutocompleteList = null;
+    MatAutocompleteList<GetQuestViewModel> questAutocompleteList = null;
+    MatAutocompleteList<GetDiscountViewModel> discountAutocompleteList = null;
+
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (Model.ClientId.HasValue)
+        {
+            clientAutocompleteList.Value = ClientSelector.FirstOrDefault(item => item.Id == Model.ClientId.Value) ?? SelectedClient;
+        }
+
+        if (Model.QuestId.HasValue)
+        {
+            questAutocompleteList.Value = QuestSelector.FirstOrDefault(item => item.Id == Model.QuestId.Value) ?? SelectedQuest;
+        }
+
+        if (Model.DiscountId.HasValue)
+        {
+            discountAutocompleteList.Value = DiscountSelector.FirstOrDefault(item => item.Id == Model.DiscountId.Value) ?? SelectedDiscount;
+        }
+    }
+
     private string Title
     {
         get
@@ -156,6 +178,7 @@
         await GetSelectorQuest();
         await GetSelectorDiscount();
     }
+
 
     private async Task GetSelectorClient()
     {
@@ -259,17 +282,17 @@
 
         if (res is not null)
         {
-            Model.ClientId = res.Id;
+            Model.QuestId = res.Id;
         }
     }
 
     private void OnNullDiscount(object obj)
     {
-        var res = obj as GetQuestViewModel;
+        var res = obj as GetDiscountViewModel;
 
         if (res is not null)
         {
-            Model.ClientId = res.Id;
+            Model.DiscountId = res.Id;
         }
     }
 }

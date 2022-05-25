@@ -21,7 +21,7 @@ namespace QuestRoom.Web.Server.Controllers
         {
             var id = await _QuestActorService.Create(viewModel);
 
-            return Ok(id.ToString());
+            return Ok(id);
         }
 
         [HttpGet]

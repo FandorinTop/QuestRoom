@@ -41,8 +41,8 @@ namespace QuestRoom.BusinessLogic
         private void Map(QuestSession questSession, BaseQuestSessionViewModel viewModel)
         {
             questSession.StartedAt = viewModel.StartedAt;
-            questSession.ClientId = viewModel.ClientId;
-            questSession.QuestId = viewModel.QuestId;
+            questSession.ClientId = viewModel.ClientId.Value;
+            questSession.QuestId = viewModel.QuestId.Value;
             questSession.DiscountId = viewModel.DiscountId;
         }
 
@@ -123,7 +123,7 @@ namespace QuestRoom.BusinessLogic
 
         private async Task ClientValidation(BaseQuestSessionViewModel viewModel)
         {
-            var client = await clientRepository.GetByIdAsync(viewModel.ClientId);
+            var client = await clientRepository.GetByIdAsync(viewModel.ClientId.Value);
 
             if (client is null)
             {
@@ -133,7 +133,7 @@ namespace QuestRoom.BusinessLogic
 
         private async Task QuestValidation(BaseQuestSessionViewModel viewModel)
         {
-            var quest = await questRepository.GetByIdAsync(viewModel.QuestId);
+            var quest = await questRepository.GetByIdAsync(viewModel.QuestId.Value);
 
             if (quest is null)
             {
@@ -143,14 +143,14 @@ namespace QuestRoom.BusinessLogic
 
         private async Task TimeValidation(BaseQuestSessionViewModel viewModel)
         {
-            var quest = await questRepository.GetByIdAsync(viewModel.QuestId);
+            var quest = await questRepository.GetByIdAsync(viewModel.QuestId.Value);
             var sessions = await repository.GetByTime(viewModel.StartedAt, quest.Duration);
 
             if(sessions.Any())
             {
                 var questSession = sessions.FirstOrDefault(session => session.QuestId == quest.Id);
 
-                if(questSession != null)
+                if(questSession != null && questSession.Id != viewModel.QuestId)
                 {
                     throw new ServiceValidationException($"Quest session already reserved sessionId: '{questSession.Id}'");
                 }

@@ -12,10 +12,10 @@ namespace QuestRoom.ViewModel.QuestSession.Request
         public DateTime StartedAt { get; set; }
 
         [Required]
-        public int ClientId { get; set; }
+        public int? ClientId { get; set; }
 
         [Required]
-        public int QuestId { get; set; }
+        public int? QuestId { get; set; }
 
         public int? DiscountId { get; set; }
     }

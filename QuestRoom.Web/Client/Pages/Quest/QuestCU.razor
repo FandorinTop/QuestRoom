@@ -3,283 +3,148 @@
 @using QuestRoom.ViewModel.Personal.Responce
 @using QuestRoom.ViewModel.Quest.Request
 @using QuestRoom.ViewModel.QuestActor.Request
+@using QuestRoom.ViewModel.QuestActor.Responce
 @using QuestRoom.ViewModel.QuestSession.Request
 @using QuestRoom.ViewModel.Type.Responce
 @inject NavigationManager navManager;
 
 <div class="mat-layout-grid">
     <div class="mat-layout-grid-inner">
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-5" style="text-align: center;">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align: center;">
             Quest Info
         </div>
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-7" style="text-align: center;">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align: center;">
             Personal
         </div>
 
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="border: dashed">
             <EditForm Model="Model" OnValidSubmit="Success">
                 <DataAnnotationsValidator />
                 <div class="mat-layout-grid">
-                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span">
                         @Title
                     </div>
                     <MatDivider />
                     <br />
                     <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatTextField Label="@nameof(Model.Name)" @bind-Value="Model.Name" />
-                                    <ValidationMessage For="@(() => Model.Name)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatNumericUpDownField Label="@nameof(Model.AgeRestriction)" @bind-Value="Model.AgeRestriction" />
-                                    <ValidationMessage For="@(() => Model.AgeRestriction)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatNumericUpDownFieldInternal Label="@nameof(Model.Duration)" @bind-Value="Model.Duration" />
-                                    <ValidationMessage For="@(() => Model.Duration)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatTextField Label="@nameof(Model.Description)" @bind-Value="Model.Description" />
-                                    <ValidationMessage For="@(() => Model.Description)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatNumericUpDownFieldInternal Label="@nameof(Model.MinPlayerCount)" @bind-Value="Model.MinPlayerCount" />
-                                    <ValidationMessage For="@(() => Model.MinPlayerCount)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatNumericUpDownFieldInternal Label="@nameof(Model.MaxPlayerCount)" @bind-Value="Model.MaxPlayerCount" />
-                                    <ValidationMessage For="@(() => Model.MaxPlayerCount)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatNumericUpDownFieldInternal Label="@nameof(Model.Price)" @bind-Value="Model.Price" />
-                                    <ValidationMessage For="@(() => Model.Price)" />
-                                </p>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <p>
-                                    <MatAutocompleteList Context="type"
-                                                         Items="@TypeSelector"
-                                                         TItem="GetQuestTypeNameViewModel"
-                                                         Label="Select Type"
-                                                         CustomStringSelector="@(i => i.Name)"
-                                                         ValueChanged="OnNullType">
-                                        <ItemTemplate>
-                                            <div style="display: flex; flex-direction: row; width: 100%;">
-                                                <div style="flex: 1;">@type.Name</div>
-                                            </div>
-                                        </ItemTemplate>
-                                    </MatAutocompleteList>
-                                    <ValidationMessage For="@(() => Model.QuestTypeId)" />
-                                </p>
-                            </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <p>
+                                <MatTextField Label="@nameof(Model.Name)" @bind-Value="Model.Name" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.Name)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <p>
+                                <MatTextField Label="@nameof(Model.Description)" @bind-Value="Model.Description" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.Description)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                            <p>
+                                <MatNumericUpDownField Label="@nameof(Model.AgeRestriction)" @bind-Value="Model.AgeRestriction" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.AgeRestriction)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                            <p>
+                                <MatNumericUpDownFieldInternal Label="@nameof(Model.Duration)" @bind-Value="Model.Duration" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.Duration)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                            <p>
+                                <MatNumericUpDownFieldInternal Label="@nameof(Model.MinPlayerCount)" @bind-Value="Model.MinPlayerCount" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.MinPlayerCount)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                            <p>
+                                <MatNumericUpDownFieldInternal Label="@nameof(Model.MaxPlayerCount)" @bind-Value="Model.MaxPlayerCount" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.MaxPlayerCount)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+                            <p>
+                                <MatNumericUpDownFieldInternal Label="@nameof(Model.Price)" @bind-Value="Model.Price" FullWidth="true" />
+                                <ValidationMessage For="@(() => Model.Price)" />
+                            </p>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                            <p>
+                                <MatAutocompleteList Context="type"
+                                    @ref = "TypeAutocompleteList"
+                                                     FullWidth="true"
+                                                     Items="@TypeSelector"
+                                                     TItem="GetQuestTypeNameViewModel"
+                                                     Label="Select Type"
+                                                     CustomStringSelector="@(i => i?.Name)"
+                                                     ValueChanged="OnNullType">
+                                    <ItemTemplate>
+                                        <div style="display: flex; flex-direction: row; width: 100%;">
+                                            <div style="flex: 1;">@type?.Name</div>
+                                        </div>
+                                    </ItemTemplate>
+                                </MatAutocompleteList>
+                                <ValidationMessage For="@(() => Model.QuestTypeId)" />
+                            </p>
+                        </div>
 
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                                <MatButton Type="submit" Raised="true">Send</MatButton>
-                            </div>
-                            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
-                            </div>
+
+
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                            <MatButton Type="submit" Raised="true">Send</MatButton>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                         </div>
                     </div>
                 </div>
             </EditForm>
         </div>
 
-        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8" style="text-align: center;">
-
+        <div hidden="@(!Id.HasValue)" class="mat-layout-grid-cell mat-layout-grid-cell-span-6" style="text-align: center;">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                <p>
+                    <MatAutocompleteList @ref = "@autocompleteList"
+                                         Context="type"
+                                         disabled="@(!Personals.Any())"
+                                         Items="@Personals"
+                                         TItem="GetPersonalViewModel"
+                                         Label="@AddPersonalLabel"
+                                         CustomStringSelector="@(i => i?.Name)"
+                                         FullWidth="true"
+                                         ValueChanged="AddActor">
+                        <ItemTemplate>
+                            <div style="display: flex; flex-direction: row; width: 100%;">
+                                <div style="flex: 1;">@type?.Name</div>
+                            </div>
+                        </ItemTemplate>
+                    </MatAutocompleteList>
+                </p>
+            </div>
+            <br />
+            <br />
+            <br />
             <MatTable Context="lesson"
+                      disabled="@(!Id.HasValue)"
                       Items="Actors"
-                      disabled="@_isDelete"
+                      ShowPaging="false"
                       SelectionChanged="@(async action => await SelectionChangedEvent(action))"
                       AllowSelection="true">
                 <MatTableHeader>
                     <th>Action</th>
-                    <th>LessonType</th>
-                    <th>StartedAt</th>
-                    <th>Duration</th>
-                    <th>Teacher</th>
-                    <th>TotalStudentOnLesson</th>
+                    <th>PersonalId</th>
+                    <th>Personal name</th>
                 </MatTableHeader>
                 <MatTableRow>
                     <td>
                         <MatButton Raised="true" OnClick="@(async e => await DeleteActor())" Icon="restore_from_trash" title="Delete Actor"></MatButton>
                     </td>
-                    <td>@lesson.LessonType</td>
-                    <td>@lesson.LessonStart</td>
-                    <td>@lesson.Duration</td>
-                    <td>@lesson.TeacherFullName</td>
-                    <td>@lesson.TotalStudentOnLesson</td>
+                    <td>@lesson.PersonalId</td>
+                    <td>@lesson.PersonalName</td>
                 </MatTableRow>
             </MatTable>
         </div>
     </div>
 </div>
-
-
-
-
-@code {
-    private string Title
-    {
-        get
-        {
-            return Id == null ? "Create Quest" : $"Edit Quest with id: '{Id}'";
-        }
-    }
-
-    [Inject]
-    HttpClient HttpClient { get; set; }
-
-    [Inject]
-    IJSRuntime JS { get; set; }
-
-    [Parameter]
-    public int? Id { get; set; } = default;
-
-    private bool _isDelete;
-
-    private List<GetQuestTypeNameViewModel> TypeSelector { get; set; } = new List<GetQuestTypeNameViewModel>();
-
-    private GetQuestTypeNameViewModel SelectedType { get; set; }
-
-    private UpdateQuestViewModel Model { get; set; } = new UpdateQuestViewModel();
-
-    private List<GetPersonalViewModel> Personals { get; set; } = new List<GetPersonalViewModel>();
-
-    public async Task Success()
-    {
-        Console.WriteLine("Success");
-
-        if (Id == null)
-        {
-            await CreateAsync();
-        }
-        else
-        {
-            await UpdateAsync();
-        }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await GetSelectorType();
-        await GetAsync();
-    }
-
-    private async Task GetAsync()
-    {
-        if (Id != default)
-        {
-            var responce = await HttpClient.GetAsync($"api/Quest/Get?id={Id}");
-            var result = await responce.Content.ReadFromJsonAsync<UpdateQuestViewModel>();
-
-            Console.WriteLine("getResult: " + result);
-
-            Model = result ?? Model;
-        }
-    }
-
-    private async Task CreateAsync()
-    {
-        var result = await HttpClient.PostAsJsonAsync(@"api/Quest/Create", Model);
-
-        if (result.IsSuccessStatusCode)
-        {
-            var id = await result.Content.ReadAsStringAsync();
-            Id = Convert.ToInt32(id);
-            await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/manage/Quest/{Id}");
-        }
-        else
-        {
-            await JS.InvokeAsync<object>("alert", $"CreationError {await result.Content.ReadAsStringAsync()}");
-        }
-    }
-
-    private async Task UpdateAsync()
-    {
-        var result = await HttpClient.PutAsJsonAsync(@"api/Quest/Update", Model);
-
-        if (result.IsSuccessStatusCode)
-        {
-            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
-        }
-        else
-        {
-            await JS.InvokeAsync<object>("alert", $"UpdateError {await result.Content.ReadAsStringAsync()}");
-        }
-    }
-
-    private async Task GetSelectorType()
-    {
-        var responce = await HttpClient.PostAsJsonAsync($"api/QuestTypeName/GetApiResponce", new GetApiBodyRequest()
-            {
-                PageIndex = 0,
-                PageSize = 1000
-            });
-
-        var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetQuestTypeNameViewModel>>();
-
-        TypeSelector = result?.Data.ToList() ?? TypeSelector;
-    }
-
-    private async Task AddActor(GetPersonalViewModel personal)
-    {
-        var actor = new CreateQuestActorViewModel()
-            {
-                PersonalId = personal.Id,
-                QuestId = this.Id.Value
-            };
-
-        var responce = await HttpClient.PostAsJsonAsync(@"api/questActor/Create", actor);
-
-        if (responce.IsSuccessStatusCode)
-        {
-            return;
-        }
-        else
-        {
-
-        }
-    }
-
-    private async Task DeleteActor(GetPersonalViewModel personal)
-    {
-        var responce = await HttpClient.DeleteAsync(@$"api/questActor/delete?id={personal.Id}");
-
-        if (responce.IsSuccessStatusCode)
-        {
-            return;
-        }
-        else
-        {
-
-        }
-    }
-
-    private void OnNullType(object obj)
-    {
-        var res = obj as GetQuestTypeNameViewModel;
-
-        if (res is not null)
-        {
-            SelectedType = res;
-            Model.QuestTypeId = res.Id;
-        }
-    }
-}

@@ -23,6 +23,8 @@
           class="mat-elevation-z5"
           UseSortHeaderRow="true"
           ShowPaging="false"
+          AllowSelection="true"
+          SelectionChanged="@(async action => await SelectionChangedEvent(action))"
           @bind-PageSize="@Pagenator.PageSize">
     <MatTableHeader>
         <MatSortHeaderRow SortChanged="@SortData">
@@ -36,10 +38,12 @@
             <MatSortHeader SortId="Description">Description</MatSortHeader>
             <MatSortHeader SortId="AgeRestriction">AgeRestriction</MatSortHeader>
             <MatSortHeader SortId="Duration">Duration</MatSortHeader>
+            <th>QuestType Name</th>
         </MatSortHeaderRow>
     </MatTableHeader>
     <MatTableRow>
         <td>
+            <MatButton Raised="true" OnClick="@(async e => await Delete())" Icon="restore_from_trash"></MatButton>
             <MatButton Raised="true" Icon="edit" title="Edit" OnClick="@(item => NavManager.NavigateTo($"/manage/Quest/{@context.Id}"))"></MatButton>
         </td>
         <td>@context.Id</td>
@@ -51,6 +55,7 @@
         <td>@context.Description</td>
         <td>@context.AgeRestriction</td>
         <td>@context.Duration</td>
+        <td>@context.Type</td>
     </MatTableRow>
 </MatTable>
 <MatPaginator Page="OnPage" @ref="matTablePagenator" @bind-Length="ApiResult.TotalCount">
@@ -155,5 +160,30 @@
         };
 
         await GetData();
+    }
+
+    private bool _isDelete = false;
+    private GetQuestViewModel Selected { get; set; }
+
+    private async Task Delete()
+    {
+        _isDelete = true;
+    }
+
+    public async Task SelectionChangedEvent(object obj)
+    {
+        var actor = obj as GetQuestViewModel;
+
+        if (actor != null)
+        {
+            Selected = actor;
+            if (_isDelete)
+            {
+                await HttpClient.DeleteAsync($"api/Quest/delete?id=" + Selected.Id);
+                await GetData();
+                _isDelete = false;
+                StateHasChanged();
+            }
+        }
     }
 }

@@ -10,18 +10,21 @@
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
     </div>
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
+        
         <MatButton OnClick="@(item => NavManager.NavigateTo($"/manage/PersonalType/"))" Icon="create_new_folder" style="display: flex; justify-content: flex-end">Add</MatButton>
     </div>
 </div>
 <div>
     <p>
-        <MatStringField @oninput ="@(async (ChangeEventArgs e) => await SerchingFieldChange(e.Value.ToString()))"></MatStringField>
+        <MatStringField Label="@FilterColumn" @oninput="@(async (ChangeEventArgs e) => await SerchingFieldChange(e.Value.ToString()))"></MatStringField>
     </p>
 </div>
 <MatTable Items="ApiResult.Data"
           class="mat-elevation-z5"
           UseSortHeaderRow="true"
           ShowPaging="false"
+          AllowSelection="true"
+          SelectionChanged="@(async action => await SelectionChangedEvent(action))"
           @bind-PageSize="@Pagenator.PageSize">
     <MatTableHeader>
         <MatSortHeaderRow SortChanged="@SortData">
@@ -33,6 +36,7 @@
     </MatTableHeader>
     <MatTableRow>
         <td>
+            <MatButton Raised="true" OnClick="@(async e => await Delete())" Icon="restore_from_trash"></MatButton>
             <MatButton Raised="true" Icon="edit" title="Edit" OnClick="@(item => NavManager.NavigateTo($"/manage/PersonalType/{@context.Id}"))"></MatButton>
         </td>
         <td>@context.Id</td>
@@ -61,7 +65,7 @@
             PageSize = 5,
         };
 
-    public ApiResultViewModel<GetPersonalTypeViewModel> ApiResult { get; set; }= new ApiResultViewModel<GetPersonalTypeViewModel>();
+    public ApiResultViewModel<GetPersonalTypeViewModel> ApiResult { get; set; } = new ApiResultViewModel<GetPersonalTypeViewModel>();
 
     public async Task GetData()
     {
@@ -142,5 +146,30 @@
         };
 
         await GetData();
+    }
+
+    private bool _isDelete = false;
+    private GetPersonalTypeViewModel Selected { get; set; }
+
+    private async Task Delete()
+    {
+        _isDelete = true;
+    }
+
+    public async Task SelectionChangedEvent(object obj)
+    {
+        var actor = obj as GetPersonalTypeViewModel;
+
+        if (actor != null)
+        {
+            Selected = actor;
+            if (_isDelete)
+            {
+                await HttpClient.DeleteAsync($"api/PersonalType/delete?id=" + Selected.Id);
+                await GetData();
+                _isDelete = false;
+                StateHasChanged();
+            }
+        }
     }
 }
