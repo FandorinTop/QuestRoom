@@ -10,7 +10,6 @@ namespace QuestRoom.DataAccess
         }
 
         public DbSet<Quest> Quests { get; set; }
-        public DbSet<QuestType> QuestTypes { get; set; }
         public DbSet<QuestTypeName> QuestTypeNames { get; set; }
 
         public DbSet<Client> Clients { get; set; }

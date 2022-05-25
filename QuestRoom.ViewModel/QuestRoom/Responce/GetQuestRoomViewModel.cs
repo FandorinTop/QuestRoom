@@ -28,5 +28,9 @@ namespace QuestRoom.ViewModel.Quest.Responce
         /// Available only for client above this value
         /// </summary>
         public int? AgeRestriction { get; set; }
+
+        public string Type { get; set; }
+
+        public int TypeId { get; set; }
     }
 }

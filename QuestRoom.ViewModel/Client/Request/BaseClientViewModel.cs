@@ -15,7 +15,7 @@ namespace QuestRoom.ViewModel.Client.Request
 
         [Required]
         [MaxLength(128)]
-        [Phone]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

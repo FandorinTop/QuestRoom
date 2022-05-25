@@ -18,11 +18,15 @@ namespace QuestRoom.BusinessLogic
         {
             _unitOfWork = unitOfWork;
             repository = _unitOfWork.QuestRepository;
+            typeRepository = _unitOfWork.QuestTypeNameRepository;
         }
 
         public async Task<int> Create(CreateQuestViewModel viewModel)
         {
             var quest = new Quest();
+
+            await Validate(viewModel);
+
             Map(quest, viewModel);
             await repository.InsertAsync(quest);
             await _unitOfWork.SaveAsync();
@@ -51,6 +55,8 @@ namespace QuestRoom.BusinessLogic
                 throw new ServiceValidationException($"No Quest with id: '{viewModel.Id}'");
             }
 
+            await Validate(viewModel);
+
             Map(quest, viewModel);
             repository.Update(quest);
             await _unitOfWork.SaveAsync();
@@ -72,32 +78,43 @@ namespace QuestRoom.BusinessLogic
             }, pageIndex, pageSize, sorting, filters);
         }
 
-        private void Map(Quest Quest, BaseQuestViewModel viewModel)
+        private void Map(Quest quest, BaseQuestViewModel viewModel)
         {
-            Quest.Name = viewModel.Name;
-            Quest.AgeRestriction = viewModel.AgeRestriction;
-            Quest.Description = viewModel.Description;
-            Quest.Duration = viewModel.Duration;
-            Quest.MaxPlayerCount = viewModel.MaxPlayerCount;
-            Quest.MinPlayerCount = viewModel.MinPlayerCount;
-            Quest.Price = viewModel.Price;
+            quest.Name = viewModel.Name;
+            quest.AgeRestriction = viewModel.AgeRestriction;
+            quest.Description = viewModel.Description;
+            quest.Duration = viewModel.Duration;
+            quest.MaxPlayerCount = viewModel.MaxPlayerCount;
+            quest.MinPlayerCount = viewModel.MinPlayerCount;
+            quest.Price = viewModel.Price;
+            quest.QuestTypeNameId = viewModel.QuestTypeId;
         }
 
-        private UpdateQuestViewModel Extract(Quest Quest) => new UpdateQuestViewModel()
+        private UpdateQuestViewModel Extract(Quest quest) => new UpdateQuestViewModel()
         {
-            Id = Quest.Id,
-            Name = Quest.Name,
-            AgeRestriction = Quest.AgeRestriction,
-            Description = Quest.Description,
-            Duration = Quest.Duration,
-            MaxPlayerCount = Quest.MaxPlayerCount,
-            MinPlayerCount = Quest.MinPlayerCount,
-            Price = Quest.Price
+            Id = quest.Id,
+            Name = quest.Name,
+            AgeRestriction = quest.AgeRestriction,
+            Description = quest.Description,
+            Duration = quest.Duration,
+            MaxPlayerCount = quest.MaxPlayerCount,
+            MinPlayerCount = quest.MinPlayerCount,
+            Price = quest.Price
         };
 
         public async Task Delete(int id)
         {
             await repository.DeleteAsync(id);
+        }
+
+        public async Task Validate(BaseQuestViewModel viewModel)
+        {
+            var questType = await typeRepository.GetByIdAsync(viewModel.QuestTypeId);
+
+            if(questType is null)
+            {
+                throw new ServiceValidationException($"No QuestType with id: '{viewModel.QuestTypeId}'");
+            }
         }
     }
 }

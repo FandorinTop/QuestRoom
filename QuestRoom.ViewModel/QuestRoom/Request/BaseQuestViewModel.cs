@@ -22,12 +22,14 @@ namespace QuestRoom.ViewModel.Quest.Request
         /// <summary>
         /// Event Duration in minutes
         /// </summary>
-        [MaxLength(360)]
+        [Range(0, 360)]
         public int Duration { get; set; }
 
         [Range(0, 120)]
         public int? AgeRestriction { get; set; }
 
         public decimal Price { get; set; }
+
+        public int QuestTypeId { get; set; }
     }
 }

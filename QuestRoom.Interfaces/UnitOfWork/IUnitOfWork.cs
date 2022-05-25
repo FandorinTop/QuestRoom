@@ -10,7 +10,6 @@ namespace QuestRoom.Interfaces.UnitOfWork
         public IQuestActorRepository QuestActorRepository { get; }
         public IQuestRepository QuestRepository { get; }
         public IQuestSessionRepository QuestSessionRepository { get; }
-        public IQuestTypeRepository QuestTypeRepository { get; }
         public IQuestTypeNameRepository QuestTypeNameRepository { get; }
         public IClientRepository ClientRepository { get; }
 

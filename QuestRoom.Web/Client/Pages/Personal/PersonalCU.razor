@@ -1,4 +1,4 @@
-﻿@page "/Personal/{Id:int?}"
+﻿@page "/manage/Personal/{Id:int?}"
 
 @using System.ComponentModel.DataAnnotations
 @using System.IO
@@ -53,14 +53,13 @@
 
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
-                        <MatAutocompleteList 
-                            Context="type" 
-                            Items="@TypeSelector" 
-                            TItem="GetPersonalTypeViewModel" 
-                            Label="Select Type" 
-                            CustomStringSelector="@(i => i.Name)" 
-                            @bind-Value="@SelectedType" 
-                            @onchange="OnNullType">
+                        <MatAutocompleteList Context="type"
+                                             Items="@TypeSelector"
+                                             @ref=personalTypeList
+                                             TItem="GetPersonalTypeViewModel"
+                                             Label="Select Type"
+                                             CustomStringSelector="@(i => i.Name)"
+                                             ValueChanged="OnNullType">
                             <ItemTemplate>
                                 <div style="display: flex; flex-direction: row; width: 100%;">
                                     <div style="flex: 1;">@type.Name</div>
@@ -84,6 +83,7 @@
 </EditForm>
 
 @code {
+    MatAutocompleteList<GetPersonalTypeViewModel> personalTypeList;
     private string Title
     {
         get
@@ -131,20 +131,19 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetAsync();
         await GetSelectorPersonalType();
+        await GetAsync();
     }
 
     private async Task GetSelectorPersonalType()
     {
         var responce = await HttpClient.PostAsJsonAsync($"api/PersonalType/GetApiResponce", new GetApiBodyRequest()
-        {
-            PageIndex = 0,
-            PageSize = 1000
-        });
+            {
+                PageIndex = 0,
+                PageSize = 1000
+            });
 
         var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetPersonalTypeViewModel>>();
-        Console.WriteLine("getResult: " + result);
 
         TypeSelector = result?.Data.ToList() ?? TypeSelector;
     }
@@ -164,6 +163,7 @@
 
     private async Task CreateAsync()
     {
+        Model.PersonalTypeId = SelectedType.Id;
         var result = await HttpClient.PostAsJsonAsync(@"api/Personal/Create", Model);
 
         if (result.IsSuccessStatusCode)
@@ -171,7 +171,7 @@
             var id = await result.Content.ReadAsStringAsync();
             Id = Convert.ToInt32(id);
             await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/Personal/{Id}");
+            navManager.NavigateTo($"/manage/Personal/{Id}");
         }
         else
         {
@@ -181,17 +181,12 @@
 
     private async Task UpdateAsync()
     {
-        var updateModel = new UpdatePersonalViewModel()
-            {
-                Id = Id.Value,
-                Name = Model.Name
-            };
-
-        var result = await HttpClient.PutAsJsonAsync(@"api/Personal/Update", updateModel);
+        Model.PersonalTypeId = SelectedType.Id;
+        var result = await HttpClient.PutAsJsonAsync(@"api/Personal/Update", Model);
 
         if (result.IsSuccessStatusCode)
         {
-            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
         }
         else
         {
@@ -200,12 +195,13 @@
     }
 
     private void OnNullType(object obj)
-        {
-            var res = obj as GetPersonalTypeViewModel;
+    {
+        var res = obj as GetPersonalTypeViewModel;
 
-            if (res is not null)
-            {
-                Model.PersonalTypeId = res.Id;
-            }
+        if (res is not null)
+        {
+            SelectedType = res;
+            Model.PersonalTypeId = res.Id;
         }
+    }
 }

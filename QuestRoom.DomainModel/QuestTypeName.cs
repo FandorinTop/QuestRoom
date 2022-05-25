@@ -27,6 +27,6 @@ namespace QuestRoom.DomainModel
             }
         }
 
-        public virtual List<QuestType> Quests { get; set; } = new List<QuestType>();
+        public virtual List<Quest> Quests { get; set; } = new List<Quest>();
     }
 }

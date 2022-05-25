@@ -1,4 +1,4 @@
-﻿@page "/QuestTypeName/{Id:int?}"
+﻿@page "/manage/QuestTypeName/{Id:int?}"
 
 @using System.ComponentModel.DataAnnotations
 @using System.IO
@@ -96,7 +96,7 @@
             var id = await result.Content.ReadAsStringAsync();
             Id = Convert.ToInt32(id);
             await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/QuestTypeName/{Id}");
+            navManager.NavigateTo($"/manage/QuestTypeName/{Id}");
         }
         else
         {
@@ -106,17 +106,11 @@
 
     private async Task UpdateAsync()
     {
-        var updateModel = new UpdateQuestTypeNameViewModel()
-            {
-                Id = Id.Value,
-                Name = Model.Name
-            };
-
-        var result = await HttpClient.PutAsJsonAsync(@"api/QuestTypeName/Update", updateModel);
+        var result = await HttpClient.PutAsJsonAsync(@"api/QuestTypeName/Update", Model);
 
         if (result.IsSuccessStatusCode)
         {
-            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
         }
         else
         {

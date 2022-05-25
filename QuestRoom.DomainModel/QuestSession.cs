@@ -4,8 +4,6 @@
     {
         public DateTime StartedAt { get; set; }
 
-        public int ParticipantCount { get; set; }
-
         public int ClientId { get; set; }
 
         public virtual Client Client { get; set; }

@@ -1,4 +1,4 @@
-﻿@page "/Discount/{Id:int?}"
+﻿@page "/manage/Discount/{Id:int?}"
 
 @using System.ComponentModel.DataAnnotations
 @using System.IO
@@ -25,7 +25,7 @@
                 </div>
                 <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
                     <p>
-                        <MatNumericUpDownField Label="@nameof(Model.Reduction)" @bind-Value="Model.Reduction" />
+                        <MatNumericUpDownFieldInternal Label="@nameof(Model.Reduction)" @bind-Value="Model.Reduction" />
                         <ValidationMessage For="@(() => Model.Reduction)" />
                     </p>
                 </div>
@@ -103,7 +103,7 @@
             var id = await result.Content.ReadAsStringAsync();
             Id = Convert.ToInt32(id);
             await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/discount/{Id}");
+            navManager.NavigateTo($"/manage/discount/{Id}");
         }
         else
         {
@@ -113,17 +113,11 @@
 
     private async Task UpdateAsync()
     {
-        var updateModel = new UpdateDiscountViewModel()
-            {
-                Id = Id.Value,
-                Name = Model.Name
-            };
-
-        var result = await HttpClient.PutAsJsonAsync(@"api/Discount/Update", updateModel);
+        var result = await HttpClient.PutAsJsonAsync(@"api/Discount/Update", Model);
 
         if (result.IsSuccessStatusCode)
         {
-            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
         }
         else
         {

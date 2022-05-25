@@ -18,7 +18,6 @@ namespace QuestRoom.DataAccess.UnitOfWork
         private IQuestActorRepository questActorRepository;
         private IQuestRepository questRepository;
         private IQuestSessionRepository questSessionRepository;
-        private IQuestTypeRepository questTypeRepository;
         private IQuestTypeNameRepository typeRepository;
         private IClientRepository clientRepository;
 
@@ -116,19 +115,6 @@ namespace QuestRoom.DataAccess.UnitOfWork
                 }
 
                 return questSessionRepository;
-            }
-        }
-
-        public IQuestTypeRepository QuestTypeRepository
-        {
-            get
-            {
-                if (questTypeRepository is null)
-                {
-                    questTypeRepository = new QuestTypeRepository(_context);
-                }
-
-                return questTypeRepository;
             }
         }
 

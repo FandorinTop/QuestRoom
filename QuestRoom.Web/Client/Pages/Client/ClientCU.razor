@@ -1,4 +1,4 @@
-﻿@page "/Client/{Id:int?}"
+﻿@page "/manage/Client/{Id:int?}"
 
 @using System.ComponentModel.DataAnnotations
 @using System.IO
@@ -111,7 +111,7 @@
             var id = await result.Content.ReadAsStringAsync();
             Id = Convert.ToInt32(id);
             await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
-            navManager.NavigateTo($"/Client/{Id}");
+            navManager.NavigateTo($"/manage/Client/{Id}");
         }
         else
         {
@@ -121,17 +121,11 @@
 
     private async Task UpdateAsync()
     {
-        var updateModel = new UpdateClientViewModel()
-            {
-                Id = Id.Value,
-                Name = Model.Name
-            };
-
-        var result = await HttpClient.PutAsJsonAsync(@"api/Client/Update", updateModel);
+        var result = await HttpClient.PutAsJsonAsync(@"api/Client/Update", Model);
 
         if (result.IsSuccessStatusCode)
         {
-            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{updateModel.Id}'");
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
         }
         else
         {

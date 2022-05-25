@@ -12,12 +12,16 @@ namespace QuestRoom.ViewModel.QuestSession.Responce
     {
         public DateTime StartedAt { get; set; }
 
-        public int ParticipantCount { get; set; }
-
         [Required]
         public int? ClientId { get; set; }
 
+        public string ClientName { get; set; }
+
+        public string ClientEmail { get; set; }
+
         [Required]
-        public int? QuestActorSetId { get; set; }
+        public int? QuestId { get; set; }
+
+        public string QuestName { get; set; }
     }
 }

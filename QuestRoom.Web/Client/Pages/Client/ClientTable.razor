@@ -1,21 +1,21 @@
-﻿@page "/discount"
+﻿@page "/Client"
 @using QuestRoom.ViewModel.Common
-@using QuestRoom.ViewModel.Discount.Responce
+@using QuestRoom.ViewModel.Client.Responce
 @inject NavigationManager NavManager
 
 <div class="mat-layout-grid-inner">
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
-        <h3>Discount Table</h3>
+        <h3>Client Table</h3>
     </div>
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
     </div>
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-2">
-        <MatButton OnClick="@(item => NavManager.NavigateTo($"/manage/discount/"))" Icon="create_new_folder" style="display: flex; justify-content: flex-end">Add</MatButton>
+        <MatButton OnClick="@(item => NavManager.NavigateTo($"/manage/Client/"))" Icon="create_new_folder" style="display: flex; justify-content: flex-end">Add</MatButton>
     </div>
 </div>
 <div>
     <p>
-        <MatStringField @oninput="@(async (ChangeEventArgs e) => await SerchingFieldChange(e.Value.ToString()))"></MatStringField>
+        <MatStringField @oninput ="@(async (ChangeEventArgs e) => await SerchingFieldChange(e.Value.ToString()))"></MatStringField>
     </p>
 </div>
 <MatTable Items="ApiResult.Data"
@@ -28,17 +28,19 @@
             <th>Action</th>
             <MatSortHeader SortId="Id">Id</MatSortHeader>
             <MatSortHeader SortId="Name">Name</MatSortHeader>
-            <MatSortHeader SortId="Reduction">Reduction</MatSortHeader>
+            <MatSortHeader SortId="Email">Email</MatSortHeader>
+            <MatSortHeader SortId="PhoneNumbe">PhoneNumbe</MatSortHeader>
             <MatSortHeader SortId="CreatedAt">CreatedAt</MatSortHeader>
         </MatSortHeaderRow>
     </MatTableHeader>
     <MatTableRow>
         <td>
-            <MatButton Raised="true" Icon="edit" title="Edit" OnClick="@(item => NavManager.NavigateTo($"/manage/discount/{@context.Id}"))"></MatButton>
+            <MatButton Raised="true" Icon="edit" title="Edit" OnClick="@(item => NavManager.NavigateTo($"/manage/Client/{@context.Id}"))"></MatButton>
         </td>
         <td>@context.Id</td>
         <td>@context.Name</td>
-        <td>@context.Reduction</td>
+        <td>@context.Email</td>
+        <td>@context.PhoneNumbe</td>
         <td>@context.CreatedAt</td>
     </MatTableRow>
 </MatTable>
@@ -48,7 +50,7 @@
 
 @code {
     MatPaginator matTablePagenator { get; set; } = null;
-    private const string FilterColumn = nameof(GetDiscountViewModel.Name);
+    private const string FilterColumn = nameof(GetClientViewModel.Name);
 
     [Inject]
     HttpClient HttpClient { get; set; }
@@ -63,15 +65,15 @@
             PageSize = 5,
         };
 
-    public ApiResultViewModel<GetDiscountViewModel> ApiResult { get; set; } = new ApiResultViewModel<GetDiscountViewModel>();
+    public ApiResultViewModel<GetClientViewModel> ApiResult { get; set; } = new ApiResultViewModel<GetClientViewModel>();
 
     public async Task GetData()
     {
-        var result = await HttpClient.PostAsJsonAsync("api/Discount/GetApiResponce", Pagenator);
+        var result = await HttpClient.PostAsJsonAsync("api/Client/GetApiResponce", Pagenator);
 
         if (result.IsSuccessStatusCode)
         {
-            ApiResult = await result.Content.ReadFromJsonAsync<ApiResultViewModel<GetDiscountViewModel>>();
+            ApiResult = await result.Content.ReadFromJsonAsync<ApiResultViewModel<GetClientViewModel>>();
         }
         else
         {

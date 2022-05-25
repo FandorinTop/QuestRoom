@@ -10,7 +10,7 @@ namespace QuestRoom.Interfaces.Services
 
         public Task Update(UpdateQuestSessionViewModel viewModel);
 
-        public Task<GetQuestSessionViewModel> Get(int id);
+        public Task<UpdateQuestSessionViewModel> Get(int id);
 
         public Task Delete(int id);
 

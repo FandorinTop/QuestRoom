@@ -18,6 +18,7 @@ namespace QuestRoom.BusinessLogic
         {
             _unitOfWork = unitOfWork;
             repository = _unitOfWork.PersonalRepository;
+            typeRepository = unitOfWork.PersonalTypeRepository;
         }
 
         public async Task<int> Create(CreatePersonalViewModel viewModel)
@@ -78,6 +79,12 @@ namespace QuestRoom.BusinessLogic
             {
                 Id = item.Id,
                 Name = item.Name,
+                BirthDate = item.BirthDate,
+                Email = item.Email,
+                Gender = item.Gender,
+                PersonalTypeId = item.PersonalTypeId,
+                PersonalTypeName = item.PersonalType.Name,
+                PhoneNumber = item.PhoneNumber,
                 CreatedAt = item.CreatedAt
             }, pageIndex, pageSize, sorting, filters);
         }

@@ -66,9 +66,8 @@ void InjectServices(IServiceCollection service)
     service.AddTransient<IQuestActorService, QuestActorService>();
     service.AddTransient<IQuestService, QuestService>();
     service.AddTransient<IQuestTypeNameService, QuestTypeNameService>();
-    service.AddTransient<IQuestTypeService, QuestTypeService>();
 
-    //service.AddTransient<IQuestSessionService, QuestSessionService>();
+    service.AddTransient<IQuestSessionService, QuestSessionService>();
 
 }
 
@@ -80,7 +79,6 @@ void InjectRepository(IServiceCollection service)
     service.AddTransient<IQuestActorRepository, QuestActorRepository>();
     service.AddTransient<IQuestRepository, QuestRepository>();
     service.AddTransient<IQuestSessionRepository, QuestSessionRepository>();
-    service.AddTransient<IQuestTypeRepository, QuestTypeRepository>();
     service.AddTransient<IQuestTypeNameRepository, QuestTypeNameRepository>();
     service.AddTransient<IClientRepository, ClientRepository>();
     service.AddTransient<IUnitOfWork, UnitOfWork>();

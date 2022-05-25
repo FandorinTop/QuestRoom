@@ -1,0 +1,275 @@
+﻿@page "/manage/QuestSession/{Id:int?}"
+
+@using System.ComponentModel.DataAnnotations
+@using System.IO
+@using System.Net.Http.Headers
+@using QuestRoom.Common
+@using QuestRoom.ViewModel.Client.Request
+@using QuestRoom.ViewModel.Discount.Responce
+@using QuestRoom.ViewModel.Personal.Request
+@using QuestRoom.ViewModel.Personal.Responce
+@using QuestRoom.ViewModel.QuestSession.Request
+@using QuestRoom.ViewModel.Client.Responce
+@using QuestRoom.ViewModel.Quest.Responce
+@using QuestRoom.ViewModel.Quest.Request
+@inject NavigationManager navManager;
+
+<EditForm Model="Model" OnValidSubmit="Success">
+    <DataAnnotationsValidator />
+    <div class="mat-layout-grid">
+        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+            @Title
+        </div>
+        <MatDivider />
+        <br />
+        <div class="mat-layout-grid-inner">
+            <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatDatePicker Label="@nameof(Model.StartedAt)" @bind-Value="Model.StartedAt" />
+                        <ValidationMessage For="@(() => Model.StartedAt)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatAutocompleteList Context="type"
+                                             Items="@ClientSelector"
+                                             TItem="GetClientViewModel"
+                                             Label="Select Client"
+                                             CustomStringSelector="@(i => i.Name)"
+                                             @bind-Value="@SelectedClient"
+                                             @onchange="OnNullClient">
+                            <ItemTemplate>
+                                <div style="display: flex; flex-direction: row; width: 100%;">
+                                    <div style="flex: 1;">@type.Name</div>
+                                </div>
+                            </ItemTemplate>
+                        </MatAutocompleteList>
+                        <ValidationMessage For="@(() => Model.ClientId)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatAutocompleteList Context="type"
+                                             Items="@QuestSelector"
+                                             TItem="GetQuestViewModel"
+                                             Label="Select Quest"
+                                             CustomStringSelector="@(i => i.Name)"
+                                             @bind-Value="@SelectedQuest"
+                                             @onchange="OnNullQuest">
+                            <ItemTemplate>
+                                <div style="display: flex; flex-direction: row; width: 100%;">
+                                    <div style="flex: 1;">@type.Name</div>
+                                </div>
+                            </ItemTemplate>
+                        </MatAutocompleteList>
+                        <ValidationMessage For="@(() => Model.QuestId)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <p>
+                        <MatAutocompleteList Context="type"
+                                             Items="@DiscountSelector"
+                                             TItem="GetDiscountViewModel"
+                                             Label="Select Discount"
+                                             CustomStringSelector="@(i => i.Name)"
+                                             @bind-Value="@SelectedDiscount"
+                                             @onchange="OnNullDiscount">
+                            <ItemTemplate>
+                                <div style="display: flex; flex-direction: row; width: 100%;">
+                                    <div style="flex: 1;">@type.Name</div>
+                                </div>
+                            </ItemTemplate>
+                        </MatAutocompleteList>
+                        <ValidationMessage For="@(() => Model.QuestId)" />
+                    </p>
+                </div>
+
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                    <MatButton Type="submit" Raised="true">Send</MatButton>
+                </div>
+                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private string Title
+    {
+        get
+        {
+            return Id == null ? "Create QuestSession" : $"Edit QuestSession with id: '{Id}'";
+        }
+    }
+
+    [Inject]
+    HttpClient HttpClient { get; set; }
+
+    [Inject]
+    IJSRuntime JS { get; set; }
+
+    [Parameter]
+    public int? Id { get; set; } = default;
+
+    private bool _isDelete { get; set; }
+
+    private UpdateQuestSessionViewModel Model { get; set; } = new UpdateQuestSessionViewModel();
+
+    private List<GetQuestViewModel> QuestSelector { get; set; } = new List<GetQuestViewModel>();
+
+    private GetQuestViewModel SelectedQuest { get; set; }
+
+    private List<GetClientViewModel> ClientSelector { get; set; } = new List<GetClientViewModel>();
+
+    private GetClientViewModel SelectedClient { get; set; }
+
+    private List<GetDiscountViewModel> DiscountSelector { get; set; } = new List<GetDiscountViewModel>();
+
+    private GetDiscountViewModel SelectedDiscount { get; set; }
+
+
+    public async Task Success()
+    {
+        Console.WriteLine("Success");
+
+        if (Id == null)
+        {
+            await CreateAsync();
+        }
+        else
+        {
+            await UpdateAsync();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAsync();
+        await GetSelectorClient();
+        await GetSelectorQuest();
+        await GetSelectorDiscount();
+    }
+
+    private async Task GetSelectorClient()
+    {
+        var responce = await HttpClient.PostAsJsonAsync($"api/Client/GetApiResponce", new GetApiBodyRequest()
+            {
+                PageIndex = 0,
+                PageSize = 100000
+            });
+
+        var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetClientViewModel>>();
+        Console.WriteLine("getResult: " + result);
+
+        ClientSelector = result?.Data.ToList() ?? ClientSelector;
+    }
+
+    private async Task GetSelectorQuest()
+    {
+        var responce = await HttpClient.PostAsJsonAsync($"api/Quest/GetApiResponce", new GetApiBodyRequest()
+            {
+                PageIndex = 0,
+                PageSize = 100000
+            });
+
+        var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetQuestViewModel>>();
+        Console.WriteLine("getResult: " + result);
+
+        QuestSelector = result?.Data.ToList() ?? QuestSelector;
+    }
+
+    private async Task GetSelectorDiscount()
+    {
+        var responce = await HttpClient.PostAsJsonAsync($"api/Discount/GetApiResponce", new GetApiBodyRequest()
+            {
+                PageIndex = 0,
+                PageSize = 100000
+            });
+
+        var result = await responce.Content.ReadFromJsonAsync<ApiResultViewModel<GetDiscountViewModel>>();
+        Console.WriteLine("getResult: " + result);
+
+        DiscountSelector = result?.Data.ToList() ?? DiscountSelector;
+    }
+
+    private async Task GetAsync()
+    {
+        if (Id != default)
+        {
+            var responce = await HttpClient.GetAsync($"api/QuestSession/Get?id={Id}");
+            var result = await responce.Content.ReadFromJsonAsync<UpdateQuestSessionViewModel>();
+
+            Console.WriteLine("getResult: " + result);
+
+            Model = result ?? Model;
+        }
+    }
+
+    private async Task CreateAsync()
+    {
+        var result = await HttpClient.PostAsJsonAsync(@"api/QuestSession/Create", Model);
+
+        if (result.IsSuccessStatusCode)
+        {
+            var id = await result.Content.ReadAsStringAsync();
+            Id = Convert.ToInt32(id);
+            await JS.InvokeAsync<object>("alert", $"Successful created! with id: '{id}'");
+            navManager.NavigateTo($"/manage/QuestSession/{Id}");
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("alert", $"CreationError {await result.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    private async Task UpdateAsync()
+    {
+        var result = await HttpClient.PutAsJsonAsync(@"api/QuestSession/Update", Model);
+
+        if (result.IsSuccessStatusCode)
+        {
+            await JS.InvokeAsync<object>("alert", $"Successful updated! for id: '{Model.Id}'");
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("alert", $"UpdateError {await result.Content.ReadAsStringAsync()}");
+        }
+    }
+
+    private void OnNullClient(object obj)
+    {
+        var res = obj as GetClientViewModel;
+
+        if (res is not null)
+        {
+            Model.ClientId = res.Id;
+        }
+    }
+
+    private void OnNullQuest(object obj)
+    {
+        var res = obj as GetQuestViewModel;
+
+        if (res is not null)
+        {
+            Model.ClientId = res.Id;
+        }
+    }
+
+    private void OnNullDiscount(object obj)
+    {
+        var res = obj as GetQuestViewModel;
+
+        if (res is not null)
+        {
+            Model.ClientId = res.Id;
+        }
+    }
+}

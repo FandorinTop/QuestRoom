@@ -15,7 +15,7 @@ namespace QuestRoom.ViewModel.Discount.Request
         /// <summary>
         /// % of Discount Range from 0-1
         /// </summary>
-        [Range(0d, 1d)]
+        [Range(0d, 100d)]
         public double Reduction { get; set; }
     }
 }
