@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.Web.Server", "Que
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestRoom.Web.Client", "QuestRoom.Web\Client\QuestRoom.Web.Client.csproj", "{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{D997884C-80AF-4273-B3CB-C6A675F669A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestRoom", "QuestRoom\QuestRoom.csproj", "{6DE64248-3CA0-4E9B-AEC8-596AED3A043D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,9 +61,16 @@ Global
 		{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8782C93D-AB2C-40EA-BD22-E4BD15A5B444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DE64248-3CA0-4E9B-AEC8-596AED3A043D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DE64248-3CA0-4E9B-AEC8-596AED3A043D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DE64248-3CA0-4E9B-AEC8-596AED3A043D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DE64248-3CA0-4E9B-AEC8-596AED3A043D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6DE64248-3CA0-4E9B-AEC8-596AED3A043D} = {D997884C-80AF-4273-B3CB-C6A675F669A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A405B6E-034A-417B-B25B-291F2C2A6853}
